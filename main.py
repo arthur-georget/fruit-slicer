@@ -1,6 +1,6 @@
 import pygame 
 import os
-
+from src.game import game
 from src.menu import menu
 
 # Variables
@@ -34,7 +34,8 @@ if __name__ == "__main__":
 
         window_surface.blit(background, (0, 0))
 
-        menu(window_surface,main_font,clock)
+        # menu(window_surface,main_font,clock)
+        game(window_surface, clock)
 
         pygame.display.update()
     pygame.exit()
