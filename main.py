@@ -14,12 +14,12 @@ if __name__ == "__main__":
 
     pygame.init()
     pygame.display.set_caption('Fruit Slicer')
-    window_surface = pygame.display.set_mode((800, 600))
-
+    window_surface = pygame.display.set_mode((1000, 562))
+    SMALL_FONT = pygame.font.SysFont("Arial", 24)
     background = pygame.Surface((800, 600))
     background.fill(pygame.Color('#000000'))
 
-    main_font = pygame.font.Font(FONT_PATH, 30), pygame.font.Font(FONT_PATH, 50)
+    main_fonts = pygame.font.Font(FONT_PATH, 30), pygame.font.Font(FONT_PATH, 50)
 
     clock = pygame.time.Clock()
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
         window_surface.blit(background, (0, 0))
 
-        menu(window_surface,main_font,clock)
+        menu(window_surface,SMALL_FONT,clock)
 
         pygame.display.update()
     pygame.exit()
