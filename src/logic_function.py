@@ -7,7 +7,7 @@ def create_letter():
     "char" : random.choice(KEYBOARD),
     "time_left" : TIME_INIT_LETTERS }
 
-def spawn_letter(letters, spwan_timer):
+def spawn_letter(letters):
     letters.append(create_letter())
     return 0.0
 

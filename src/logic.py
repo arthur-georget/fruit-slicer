@@ -4,7 +4,7 @@ import pygame
 import os
 import random
 from logic_constant import *
-from game_function import *
+from logic_function import *
 
 
 # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -42,7 +42,7 @@ if __name__ == "__main__":
         # Spawn Letters
         spawn_delay = SPAW_INIT / SPEED_RATIO
         if spawn_timer >= spawn_delay:
-            spawn_timer = spawn_letter(letters, delta)
+            spawn_timer = spawn_letter(letters)
 
         # Lives 
         lives -= update_letters(letters, delta)
