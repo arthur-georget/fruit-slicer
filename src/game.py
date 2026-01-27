@@ -23,6 +23,7 @@ def game(window_surface, clock):
     lives = LIFE_MAX
     score = 0
     combo = 0
+    frozen = False
 
 
     print("\n \n --- Fruit Slicer TEST TERMINAL  ---\n \n")
@@ -39,8 +40,9 @@ def game(window_surface, clock):
             spawn_timer = spawn_letter(letters)
 
         # Lives 
-        lost_life, combo = update_letters(letters, delta, combo)
+        lost_life, combo = update_letters(letters, delta, combo, frozen=True)
         lives -= lost_life
+
 
         # Events
         for event in pygame.event.get():
@@ -49,7 +51,7 @@ def game(window_surface, clock):
 
             elif event.type == pygame.KEYDOWN:
                 key = event.unicode.upper()
-                score_add, combo = key_input(letters, key, combo)
+                score_add, combo = slice_element(letters, key, combo)
                 score += score_add
 
         # Stand by test terminal --- A SUPPRIMER PAR LA SUITE ---
