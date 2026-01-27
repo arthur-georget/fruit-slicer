@@ -14,6 +14,7 @@ TIME_INIT_LETTERS = 2.0
 SPAW_INIT = 1.0
 SPEED_RATIO = 0.80
 MAX_COMBO = 3
+FREEZE_DURATION = 10.0
 
 
 
@@ -26,9 +27,9 @@ def create_letter(element_type):
     "type" : element_type}
 
 def spawn_letter(letters):
-    if random.random() > 0.30 :
+    if random.random() > 0.85 :
         letters.append(create_letter("ICECUBE"))
-    elif random.random() > 0.40 :
+    elif random.random() > 0.60 :
         letters.append(create_letter("BOMB"))
     else: 
         letters.append(create_letter("FRUIT"))
@@ -45,7 +46,7 @@ def update_letters(letters, delta, combo, frozen = False):
         else:    
             letter["time_left"] -= delta * SPEED_RATIO
 
-        print(letter["time_left"])
+        # print(letter["time_left"])
 
         if letter["time_left"] <= 0:
             letters.remove(letter)
@@ -59,6 +60,7 @@ def update_letters(letters, delta, combo, frozen = False):
 
 def slice_element(letters, key, combo):
     hit = False
+    icecube_hit = False
     score = 0
 
     for letter in letters[:]:
@@ -66,7 +68,7 @@ def slice_element(letters, key, combo):
             if letter["type"] == "BOMB":
                 pass # Game Over
             elif letter["type"] == "ICECUBE":
-                frozen = True
+                icecube_hit = True
             letters.remove(letter)
             hit = True
             break
@@ -78,7 +80,7 @@ def slice_element(letters, key, combo):
     else:
         combo = 0
         score = 0
-    return score, combo
+    return score, combo, icecube_hit
 
 def combo_add_score(score, combo):
     return score * (1 + combo)

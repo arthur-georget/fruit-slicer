@@ -3,17 +3,11 @@
 import pygame
 from src.game_function import *
 
-
-# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# FONT_PATH = os.path.join(BASE_DIR, "assets", "fonts", "LiberationSans-Regular.ttf")
-
-
 # Main program
 
 
 def game(window_surface, clock):
 
-    # main_font = pygame.font.Font(FONT_PATH, 30), pygame.font.Font(FONT_PATH, 50)
 
     is_running = True
 
@@ -24,6 +18,7 @@ def game(window_surface, clock):
     score = 0
     combo = 0
     frozen = False
+    freeze_timer = 0.0
 
 
     print("\n \n --- Fruit Slicer TEST TERMINAL  ---\n \n")
@@ -32,7 +27,16 @@ def game(window_surface, clock):
 
         # Frame
         delta = clock.tick(FPS) / 1000
-        spawn_timer += delta
+        if not frozen:
+            spawn_timer += delta
+
+        # Freeze
+        freeze_timer -= delta 
+        if freeze_timer < 0:
+            freeze_timer = 0
+        frozen = freeze_timer > 0
+        if frozen:
+            print(f"FROZEN") # debug en stand by
 
         # Spawn Letters
         spawn_delay = SPAW_INIT / SPEED_RATIO
@@ -40,7 +44,7 @@ def game(window_surface, clock):
             spawn_timer = spawn_letter(letters)
 
         # Lives 
-        lost_life, combo = update_letters(letters, delta, combo, frozen=True)
+        lost_life, combo = update_letters(letters, delta, combo, frozen)
         lives -= lost_life
 
 
@@ -51,8 +55,11 @@ def game(window_surface, clock):
 
             elif event.type == pygame.KEYDOWN:
                 key = event.unicode.upper()
-                score_add, combo = slice_element(letters, key, combo)
+                score_add, combo, icecube_hit = slice_element(letters, key, combo)
                 score += score_add
+                if icecube_hit:
+                    freeze_timer = FREEZE_DURATION
+                    print("Glacon touché") # debug en stand by
 
         # Stand by test terminal --- A SUPPRIMER PAR LA SUITE ---
         print(f"\rLettres: {[l['char'] for l in letters]} | Score: {score} | Vies: {lives}", end="")

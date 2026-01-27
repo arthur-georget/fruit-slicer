@@ -38,4 +38,4 @@ if __name__ == "__main__":
         game(window_surface, clock)
 
         pygame.display.update()
-    pygame.exit()
+    pygame.quit()
