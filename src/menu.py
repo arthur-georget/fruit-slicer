@@ -62,9 +62,9 @@ BUTTON_HEIGHT = 70
 #popup_img = pygame.image.load("modules/graphic/assets/background_score.png").convert_alpha()
 #popup_rect = popup_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
-def draw_text(text, size, color, center, window_surface,SMALL_FONT):
+def draw_text(text, size, color, center, window_surface,custom_font):
     #Draw text with color size and window_surface#
-    text_surface = SMALL_FONT.render(text, True, color)
+    text_surface = custom_font.render(text, True, color)
     text_rect = text_surface.get_rect(center=center)
     window_surface.blit(text_surface, text_rect)
 
@@ -78,7 +78,7 @@ def draw_button_pic(x, y, width, height, image, window):
     return rect
 
 # Menu
-def menu(window_surface,SMALL_FONT,clock):
+def menu(window_surface,custom_fonts,clock):
 
     #----------#
     # Variables
@@ -95,7 +95,7 @@ def menu(window_surface,SMALL_FONT,clock):
     menu_background = pygame.transform.scale(menu_background,(1000, 562))
     running = True
     difficulty_index = 0
-    draw_text(difficulties[difficulty_index],40,BLACK,(center_x, center_y + 145),window_surface,SMALL_FONT)
+    draw_text(difficulties[difficulty_index],40,BLACK,(center_x, center_y + 145),window_surface,custom_fonts[0])
     #confirm_button = pygame.Rect(center_x, center_y)
     # Arrow rect
     left_arrow_rect = arrow_left_png.get_rect()
@@ -159,23 +159,21 @@ def menu(window_surface,SMALL_FONT,clock):
         play_button = pygame.Rect((center_x - (BUTTON_WIDTH/2), center_y -40),(BUTTON_WIDTH,BUTTON_HEIGHT))
         play_image = (button_background_hover_scale if play_button.collidepoint(mouse_pos)else button_background_scale)
         window_surface.blit(play_image,play_button)
-        draw_text("PLAY", 36, WHITE, play_button.center, window_surface,SMALL_FONT) 
+        draw_text("PLAY", 36, WHITE, play_button.center, window_surface,custom_fonts[0]) 
         
 
         # Options button
         options_button = pygame.Rect((center_x - (BUTTON_WIDTH/2), center_y + 120),(BUTTON_WIDTH,BUTTON_HEIGHT))
         options_image = (button_background_hover_scale if options_button.collidepoint(mouse_pos)else button_background_scale)
         window_surface.blit(options_image, options_button)
-        draw_text("OPTIONS", 36, WHITE, options_button.center, window_surface,SMALL_FONT) 
-        
-        
+        draw_text("OPTIONS", 36, WHITE, options_button.center, window_surface,custom_fonts[0]) 
         
         # Exit button
         exit_button = pygame.Rect((center_x - (BUTTON_WIDTH/2), center_y + 200),(BUTTON_WIDTH,BUTTON_HEIGHT))
         mouse_pos = pygame.mouse.get_pos()
         exit_img =  (button_background_hover_scale if exit_button.collidepoint(mouse_pos)else button_background_scale)
         window_surface.blit(exit_img, exit_button)
-        draw_text("EXIT", 36, WHITE, exit_button.center, window_surface,SMALL_FONT)
+        draw_text("EXIT", 36, WHITE, exit_button.center, window_surface,custom_fonts[0])
 
         # Arrow blit
         window_surface.blit(arrow_left_png, left_arrow_rect)
@@ -186,7 +184,7 @@ def menu(window_surface,SMALL_FONT,clock):
 
         # Difficulty swap
         window_surface.blit(button_background_scale, difficulty_button)
-        draw_text(difficulties[difficulty_index],36, difficulty_color[difficulty_index], difficulty_button.center, window_surface,SMALL_FONT)
+        draw_text(difficulties[difficulty_index],36, difficulty_color[difficulty_index], difficulty_button.center, window_surface,custom_fonts[0])
         
         # Score Rectangle
         #current_score = 40
@@ -195,4 +193,3 @@ def menu(window_surface,SMALL_FONT,clock):
 
         clock.tick(60)
         pygame.display.update()
-    pygame.exit()

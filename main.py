@@ -23,15 +23,4 @@ if __name__ == "__main__":
     main_fonts = pygame.font.Font(FONT_PATH, 30), pygame.font.Font(FONT_PATH, 50)
     hello_text = main_fonts[0].render("Hello, Pygame!", True, (255, 255, 255))
 
-    is_running = True
-
-    while is_running:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                is_running = False
-
-        #menu(window_surface,main_font,clock)
-
-        pygame.display.update()
-    pygame.exit()
+    menu(window_surface,main_fonts,clock)
