@@ -20,6 +20,14 @@ images = (
                 "path": path.join(IMAGES_PATH, "button_background.png")
             },
             {
+                "name": "button_background_hover",
+                "path": path.join(IMAGES_PATH, "button_background_hover.png")
+            },
+            {
+                "name": "button_background_hover_2",
+                "path": path.join(IMAGES_PATH, "button_background_hover_2.png")
+            },
+            {
                 "name": "game_background",
                 "path": path.join(IMAGES_PATH, "game_background.png")
             },
@@ -105,6 +113,8 @@ def load_image(image_name):
         - arrow_left
         - arrow_right
         - scores_board
+        - button_background_hover
+        - button_background_hover_2
     - states returned:
         0. image loaded successfully
         1. unknown image name
@@ -161,7 +171,7 @@ def blit_image(surface, image_loaded, x_pos=0, y_pos=0, center_anchor=False, cen
     try:
         try:
             if fill:
-                image_loaded = transform.scale(image_loaded,(surface.get_width(),surface.get_height()))
+                image_loaded = transform.scale(image_loaded,(300,70))
         except:
             print(f"blit_image(): error when trying to scale {image_loaded}")
             return 2
