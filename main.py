@@ -23,4 +23,5 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
 
     main_fonts = pygame.font.Font(FONT_PATH, 30), pygame.font.Font(FONT_PATH, 50)
+
     menu(window_surface,main_fonts,clock)
