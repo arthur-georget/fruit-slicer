@@ -9,6 +9,7 @@ from src.assets_management import *
 # window_surface Size
 HEIGHT = 731
 WIDTH = 1300  
+
 #Center window_surface
 center_x = WIDTH // 2
 center_y = HEIGHT // 2
@@ -64,7 +65,7 @@ def game(window_surface, clock):
     combo_timer = 0.0
     game_timer = 0.0
     timmer_running = True
-
+    game_background_image = load_image("game_background")
 
     print("\n \n --- Fruit Slicer TEST TERMINAL  ---\n \n")
 
@@ -76,7 +77,8 @@ def game(window_surface, clock):
     #-----------------
 
     while is_running:
-
+        
+        window_surface.blit(game_background_image, (0,0))
         # Frame
         delta = clock.tick(FPS) / 1000
         if not frozen:
