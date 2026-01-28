@@ -1,5 +1,3 @@
-
-
 import pygame
 from src.game_function import *
 from src.assets_management import *
@@ -48,7 +46,7 @@ def draw_text(text, size, color, center, window_surface,custom_font):
     window_surface.blit(text_surface, text_rect)
 
 # Main program
-def game(window_surface, clock):
+def game(window_surface, custom_fonts_tuple, clock):
 
     
     #-----------------
@@ -66,6 +64,16 @@ def game(window_surface, clock):
     game_timer = 0.0
     timmer_running = True
     game_background_image = load_image("game_background")
+
+    images = {
+                "apple": {"normal": load_image("apple"), "iced": load_image("iced_apple"), "sliced": load_image("sliced_apple")},
+                "banana": {"normal": load_image("banana"), "iced": load_image("iced_banana"), "sliced": load_image("sliced_banana")},
+                "kiwi": {"normal": load_image("kiwi"), "iced": load_image("iced_kiwi"), "sliced": load_image("sliced_kiwi")},
+                "orange": {"normal": load_image("orange"), "iced": load_image("iced_orange"), "sliced": load_image("sliced_orange")},
+                "pineapple": {"normal": load_image("pineapple"), "iced": load_image("iced_pineapple"), "sliced": load_image("sliced_pineapple")},
+                "bomb": {"normal": load_image("bomb"), "iced": load_image("iced_bomb"), "sliced": load_image("sliced_bomb")},
+                "ice_cube": {"normal": load_image("ice_cube"), "iced": load_image("ice_cube"), "sliced": load_image("sliced_ice_cube")}
+            }
 
     print("\n \n --- Fruit Slicer TEST TERMINAL  ---\n \n")
 
@@ -106,6 +114,13 @@ def game(window_surface, clock):
         spawn_delay = SPAW_INIT / SPEED_RATIO
         if spawn_timer >= spawn_delay:
             spawn_timer = spawn_letter(letters)
+        
+        # Blit elements in screen
+        for element in letters:
+            char_to_blit = custom_fonts_tuple[0].render(element["char"], True, (255,255,255))
+            image_to_blit = transform.scale(images[element["image_name"]]["normal"], (100, 100))
+            window_surface.blit(image_to_blit,(element["x_pos"],element["y_pos"]))
+            window_surface.blit(char_to_blit,(element["x_pos"],element["y_pos"]))
 
         # Lives 
         lost_life, combo = update_letters(letters, delta, combo, frozen)
@@ -131,7 +146,7 @@ def game(window_surface, clock):
                     combo_timer = 1.0 # timer combo ( 1seconde atm )
 
         # Stand by test terminal --- A SUPPRIMER PAR LA SUITE ---
-        print(f"\rLettres: {[l['char'] for l in letters]} | Score: {score} | Vies: {lives}", end="")
+        print(f"\rLettres: {[l['type'] for l in letters]} | {[l['char'] for l in letters]} | Score: {score} | Vies: {lives}", end="")
 
         # Lose
         if lives <= 0:

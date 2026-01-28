@@ -3,8 +3,8 @@ import random
 
 # --- CONSTANT ---
 
-KEYBOARD = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$"]
-
+KEYBOARD = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$")
+FRUITS = ("apple","banana","kiwi","orange","pineapple")
 LIFE_MAX = 3
 SCORE_ADD = 1
 
@@ -20,19 +20,28 @@ FREEZE_DURATION = 10.0
 
 # Functions
 
-def create_letter(element_type):
+def create_letter(element_type,x_pos,y_pos,image_name,letters):
+    letters_already_there = ""
+    for letter in letters:
+        letters_already_there += letter["char"]
+    char_to_return = random.choice(KEYBOARD)
+    while char_to_return in letters_already_there: 
+        char_to_return = random.choice(KEYBOARD)
     return {
-    "char" : random.choice(KEYBOARD),
+    "char" : char_to_return,
+    "x_pos" : x_pos,
+    "y_pos" : y_pos,
     "time_left" : TIME_INIT_LETTERS,
-    "type" : element_type}
+    "type" : element_type,
+    "image_name": image_name}
 
 def spawn_letter(letters):
-    if random.random() > 1.00 :
-        letters.append(create_letter("ICECUBE"))
-    elif random.random() > 1.00 :
-        letters.append(create_letter("BOMB"))
+    if random.random() > 0.9 :
+        letters.append(create_letter("ICECUBE",random.randrange(0,1000,10),random.randrange(0,500,10),"ice_cube",letters))
+    elif random.random() > 0.8 :
+        letters.append(create_letter("BOMB",random.randrange(0,1000,10),random.randrange(0,500,10),"bomb",letters))
     else: 
-        letters.append(create_letter("FRUIT"))
+        letters.append(create_letter("FRUIT",random.randrange(0,1000,10),random.randrange(0,500,10),random.choice(FRUITS),letters))
     return 0.0
 
 def update_letters(letters, delta, combo, frozen = False):
