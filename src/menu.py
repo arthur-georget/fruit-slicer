@@ -83,16 +83,6 @@ def menu(window_surface,custom_fonts_tuple,clock):
     #----------#
     # Variables
     #----------#
-    # Arrow Difficulty
-    arrow_left_png = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "arrow_left.png").convert_alpha()
-    arrow_right_png = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "arrow_right.png").convert_alpha()
-    arrow_left_png = pygame.transform.scale(arrow_left_png, (60, 60))
-    arrow_right_png = pygame.transform.scale(arrow_right_png, (60, 60))
-
-    ## Background
-    menu_background = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "menu_background.png").convert()
-    menu_background = pygame.transform.scale(menu_background,(1300, 731))
-    running = True
     difficulty_index = 0
     #Load
     arrow_left_png = load_image( "arrow_left")
@@ -124,19 +114,56 @@ def menu(window_surface,custom_fonts_tuple,clock):
         (110, 365),  
     ]
     top_scores = ["1. 3000", "2. 2750", "3. 2600"]
-    #draw_text(f"Your Score : {current_score}", 28, WHITE, score.center, window_surface,custom_fonts_tuple[0])
+    
+    # Scale
+    ## Background
+    menu_background = pygame.transform.scale(menu_background,(1300, 731))
+    ## Arrow Difficulty
+    arrow_left_png = pygame.transform.scale(arrow_left_png, (60, 60))
+    arrow_right_png = pygame.transform.scale(arrow_right_png, (60, 60))
+    ## -- Buttons Play / Difficulty / Options / Exit --
+    button_background_scale = pygame.transform.scale(button_background, (BUTTON_WIDTH, BUTTON_HEIGHT))
+    button_background_hover_scale = pygame.transform.scale(button_background_hover, (BUTTON_WIDTH, BUTTON_HEIGHT))
+    button_background_hover_scale_exit = pygame.transform.scale(button_background_hover, (BUTTON_WIDTH / 3, BUTTON_HEIGHT))
+    button_background_scale_exit = pygame.transform.scale(button_background, (BUTTON_WIDTH / 3, BUTTON_HEIGHT))
+    # Arrow rect
+    left_arrow_rect = arrow_left_png.get_rect()
+    right_arrow_rect = arrow_right_png.get_rect()
+    left_arrow_rect.topleft = (center_x - ((BUTTON_WIDTH/2)+ 50), center_y + 208)
+    right_arrow_rect.topright = (center_x + ((BUTTON_WIDTH/2)+ 55) - 12, center_y + 208)
 
-    #-------------------------------------------------------------------------------------------------------------------------------#
-    # 
-    #                                                        IN/OUT
-    #
-    #-------------------------------------------------------------------------------------------------------------------------------#
+    while True:
+        window_surface.blit(menu_background, (0, 0))
+        mouse_pos = pygame.mouse.get_pos()
+        ##Score
+        # Button Play
+        play_image = (button_background_hover_scale if play_button.collidepoint(mouse_pos)else button_background_scale)
+        window_surface.blit(play_image,play_button)
+        draw_text("PLAY", 36, WHITE, play_button.center, window_surface,custom_fonts_tuple[0]) 
 
+        # Button Options
+        options_image = (button_background_hover_scale if options_button.collidepoint(mouse_pos)else button_background_scale)
+        window_surface.blit(options_image, options_button)
+        draw_text("OPTIONS", 36, WHITE, options_button.center, window_surface,custom_fonts_tuple[0])
 
+        # Button Exit
+        exit_img =  (button_background_hover_scale_exit if exit_button.collidepoint(mouse_pos)else button_background_scale_exit)
+        window_surface.blit(exit_img, exit_button)
+        draw_text("EXIT", 36, WHITE, exit_button.center, window_surface,custom_fonts_tuple[0])
 
+        # Difficulty swap
+        window_surface.blit(button_background_scale, difficulty_button)
+        draw_text(difficulties[difficulty_index],36, difficulty_color[difficulty_index], difficulty_button.center, window_surface,custom_fonts_tuple[0])
+        # Arrow blit
+        window_surface.blit(arrow_left_png, left_arrow_rect)
+        window_surface.blit(arrow_right_png, right_arrow_rect)
+        
+        # Score
+        draw_button_pic(10, 10, 341, 512, score_background, window_surface)
+        draw_text("Votre score : 1250", 36, (255, 255, 255), your_score_center, window_surface, custom_fonts_tuple[0])
+        for score_text, center in zip(top_scores, top_scores_centers):
+            draw_text(score_text, 32, (255, 255, 255), center, window_surface, custom_fonts_tuple[0])
 
-    while running:
-        #window_surface.blit(menu_background, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return None
@@ -166,36 +193,5 @@ def menu(window_surface,custom_fonts_tuple,clock):
                 elif exit_button.collidepoint(event.pos):
                     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     return None
-        
-        mouse_pos = pygame.mouse.get_pos()
-
-        # Button Play
-        play_image = (button_background_hover_scale if play_button.collidepoint(mouse_pos)else button_background_scale)
-        window_surface.blit(play_image,play_button)
-        draw_text("PLAY", 36, WHITE, play_button.center, window_surface,custom_fonts_tuple[0]) 
-
-        # Button Options
-        options_image = (button_background_hover_scale if options_button.collidepoint(mouse_pos)else button_background_scale)
-        window_surface.blit(options_image, options_button)
-        draw_text("OPTIONS", 36, WHITE, options_button.center, window_surface,custom_fonts_tuple[0])
-
-        # Button Exit
-        exit_img =  (button_background_hover_scale_exit if exit_button.collidepoint(mouse_pos)else button_background_scale_exit)
-        window_surface.blit(exit_img, exit_button)
-        draw_text("EXIT", 36, WHITE, exit_button.center, window_surface,custom_fonts_tuple[0])
-
-        # Difficulty swap
-        window_surface.blit(button_background_scale, difficulty_button)
-        draw_text(difficulties[difficulty_index],36, difficulty_color[difficulty_index], difficulty_button.center, window_surface,custom_fonts_tuple[0])
-        # Arrow blit
-        window_surface.blit(arrow_left_png, left_arrow_rect)
-        window_surface.blit(arrow_right_png, right_arrow_rect)
-        
-        # Score
-        draw_button_pic(10, 10, 341, 512, score_background, window_surface)
-        draw_text("Votre score : 1250", 36, (255, 255, 255), your_score_center, window_surface, custom_fonts_tuple[0])
-        for score_text, center in zip(top_scores, top_scores_centers):
-            draw_text(score_text, 32, (255, 255, 255), center, window_surface, custom_fonts_tuple[0])
-
         clock.tick(60)
         pygame.display.update()

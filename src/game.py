@@ -6,10 +6,48 @@ from src.assets_management import *
 
 
 
+# window_surface Size
+HEIGHT = 731
+WIDTH = 1300  
+#Center window_surface
+center_x = WIDTH // 2
+center_y = HEIGHT // 2
+
+#-------#
+# MUSIC
+#-------#
+#pygame.mixer.music.load()
+#pygame.mixer.music.set_volume(0.5)
+#pygame.mixer.music.play(-1)
+
+#-------#
+# COLORS
+#-------#
+#Remove or change file after test
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (100, 100, 100)
+BLUE = (50, 100, 200)
+LIGHT_BLUE = (0, 123, 255, 255)
+RED = (180, 30, 30)
+LIGHT_RED = (255, 0, 46, 255)
+GREEN = (0, 255, 78)
+DARK_GREEN = (0, 185, 78, 255)
+YELLOW = (255, 255, 0, 255)
+PURPLE = (200, 50, 50)
+
+# Button size
+BUTTON_WIDTH = 300
+BUTTON_HEIGHT = 70
+
+def draw_text(text, size, color, center, window_surface,custom_font):
+    #Draw text with color size and window_surface#
+    text_surface = custom_font.render(text, True, color)
+    text_rect = text_surface.get_rect(center=center)
+    window_surface.blit(text_surface, text_rect)
+
 # Main program
 def game(window_surface, clock):
-
-
 
     
     #-----------------
@@ -38,7 +76,7 @@ def game(window_surface, clock):
     #-----------------
 
     while is_running:
-        
+
         # Frame
         delta = clock.tick(FPS) / 1000
         if not frozen:
@@ -47,7 +85,6 @@ def game(window_surface, clock):
         # Timer
         if timmer_running:
             game_timer += delta
-
 
         # Combo
         combo_timer -= delta

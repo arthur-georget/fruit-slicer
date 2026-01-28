@@ -46,7 +46,8 @@ def update_letters(letters, delta, combo, frozen = False):
         else:    
             letter["time_left"] -= delta * SPEED_RATIO
 
-        # print(letter["time_left"])
+        # Stand by for test
+        # print(letter["time_left"]) 
 
         if letter["time_left"] <= 0:
             letters.remove(letter)
