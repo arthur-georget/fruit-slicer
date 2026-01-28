@@ -1,6 +1,7 @@
 import pygame
 from src.button import *
 from pathlib import Path
+from src.game import game
 from src.assets_management import load_image, blit_image
 
 #-------#
