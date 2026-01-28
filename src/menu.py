@@ -1,7 +1,7 @@
 import pygame
 
 from pathlib import Path
-from src.assets_management import blit_image, load_image
+from src.assets_management import load_image
 from src.game import *
 
 #---------------
@@ -48,7 +48,6 @@ difficulties = [
     "HARD",
     "G0D LIK3"]
 
-
 difficulty_color = [
     GREEN,     # easy = green
     YELLOW,   # medium = yellow
@@ -60,7 +59,7 @@ difficulty_color = [
 BUTTON_WIDTH = 300
 BUTTON_HEIGHT = 70
 
-#popup_img = pygame.image.load("modules/graphic/assets/score_background.png").convert_alpha()
+#popup_img = load_image("modules/graphic/assets/score_background.png").convert_alpha()
 #popup_rect = popup_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
 def draw_text(text, size, color, center, window_surface,custom_font):
@@ -95,26 +94,16 @@ def menu(window_surface,custom_fonts_tuple,clock):
     menu_background = pygame.transform.scale(menu_background,(1300, 731))
     running = True
     difficulty_index = 0
+    #Load
+    arrow_left_png = load_image( "arrow_left")
+    arrow_right_png = load_image( "arrow_right")
+    menu_background = load_image( "menu_background")
+    button_background = load_image( "button_background_hover")
+    button_background_hover = load_image( "button_background_hover_2")
+    score_background = load_image("scores_board")
     
-    #confirm_button = pygame.Rect(center_x, center_y)
-    # Arrow rect
-    left_arrow_rect = arrow_left_png.get_rect()
-    right_arrow_rect = arrow_right_png.get_rect()
-    left_arrow_rect.topleft = (center_x - ((BUTTON_WIDTH/2)+ 50), center_y + 208)
-    right_arrow_rect.topright = (center_x + ((BUTTON_WIDTH/2)+ 55) - 12, center_y + 208)
 
-    # -- Buttons Play / Difficulty / Options / Exit --
-
-    button_background = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "button_background_hover.png").convert_alpha()
-    button_background_hover = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "button_background_hover_2.png").convert_alpha()
-    button_background_scale = pygame.transform.scale(button_background, (BUTTON_WIDTH, BUTTON_HEIGHT))
-    button_background_hover_scale = pygame.transform.scale(button_background_hover, (BUTTON_WIDTH, BUTTON_HEIGHT))
-    button_background_hover_scale_exit = pygame.transform.scale(button_background_hover, (BUTTON_WIDTH / 3, BUTTON_HEIGHT))
-    button_background_scale_exit = pygame.transform.scale(button_background, (BUTTON_WIDTH / 3, BUTTON_HEIGHT))
-
-    score_background = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "scores_board.png").convert_alpha()
-
-        # Play button
+    # Play button
     play_button = pygame.Rect((center_x - (BUTTON_WIDTH/2), center_y + 110),(BUTTON_WIDTH,BUTTON_HEIGHT))
 
     # Options button
@@ -131,8 +120,8 @@ def menu(window_surface,custom_fonts_tuple,clock):
     your_score_center = (180, 200)
     top_scores_centers = [
         (110, 275),  
-        (110, 330),  
-        (110, 390),  
+        (110, 320),  
+        (110, 365),  
     ]
     top_scores = ["1. 3000", "2. 2750", "3. 2600"]
     #draw_text(f"Your Score : {current_score}", 28, WHITE, score.center, window_surface,custom_fonts_tuple[0])

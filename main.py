@@ -19,7 +19,6 @@ if __name__ == "__main__":
     window_surface = pygame.display.set_mode((1300, 731))
 
     background = pygame.Surface((1300, 731))
-    
 
     clock = pygame.time.Clock()
 
