@@ -226,7 +226,7 @@ def load_image(image_name):
         print("load_image(): unhandled error")
         return 3
     
-def blit_image(surface, image_loaded, x_pos=0, y_pos=0, center_anchor=False, center_vertically=False, center_horizontally=False, fill=False):
+def blit_image(window_screen, surface, image_loaded, x_pos=0, y_pos=0, center_anchor=False, center_vertically=False, center_horizontally=False, fill=False):
 
     '''
     blit image loaded on provided surface, easy fill or center the image with 
@@ -277,7 +277,7 @@ def blit_image(surface, image_loaded, x_pos=0, y_pos=0, center_anchor=False, cen
         except:
             print(f"blit_image(): error when trying to vertically center {image_loaded}")
             return 5
-        surface.blit(image_loaded, (x_pos, y_pos))
+        window_screen.blit(image_loaded, surface)
         return 0
     except:
         print(f"blit_image(): error when trying to blit {image_loaded}")
