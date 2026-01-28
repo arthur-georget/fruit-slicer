@@ -38,6 +38,82 @@ images = (
             {
                 "name": "scores_board",
                 "path": path.join(IMAGES_PATH, "scores_board.png")
+            },
+            {
+                "name": "apple",
+                "path": path.join(IMAGES_PATH, "apple.png")
+            },
+            {
+                "name": "sliced_apple",
+                "path": path.join(IMAGES_PATH, "sliced_apple.png")
+            },
+            {
+                "name": "iced_apple",
+                "path": path.join(IMAGES_PATH, "iced_apple.png")
+            },
+            {
+                "name": "banana",
+                "path": path.join(IMAGES_PATH, "banana.png")
+            },
+            {
+                "name": "sliced_banana",
+                "path": path.join(IMAGES_PATH, "sliced_banana.png")
+            },
+            {
+                "name": "iced_banana",
+                "path": path.join(IMAGES_PATH, "iced_banana.png")
+            },
+            {
+                "name": "kiwi",
+                "path": path.join(IMAGES_PATH, "kiwi.png")
+            },
+            {
+                "name": "sliced_kiwi",
+                "path": path.join(IMAGES_PATH, "sliced_kiwi.png")
+            },
+            {
+                "name": "iced_kiwi",
+                "path": path.join(IMAGES_PATH, "iced_kiwi.png")
+            },
+            {
+                "name": "orange",
+                "path": path.join(IMAGES_PATH, "orange.png")
+            },
+            {
+                "name": "sliced_orange",
+                "path": path.join(IMAGES_PATH, "sliced_orange.png")
+            },
+            {
+                "name": "iced_orange",
+                "path": path.join(IMAGES_PATH, "iced_orange.png")
+            },
+            {
+                "name": "pineapple",
+                "path": path.join(IMAGES_PATH, "pineapple.png")
+            },
+            {
+                "name": "sliced_pineapple",
+                "path": path.join(IMAGES_PATH, "sliced_pineapple.png")
+            },
+            {
+                "name": "iced_pineapple",
+                "path": path.join(IMAGES_PATH, "iced_pineapple.png")
+            },
+            {
+                "name": "ice_cube",
+                "path": path.join(IMAGES_PATH, "ice_cube.png")
+            },
+            {
+                "name": "sliced_ice_cube",
+                "path": path.join(IMAGES_PATH, "sliced_ice_cube.png")
+            },
+            {
+                "name": "bomb",
+                "path": path.join(IMAGES_PATH, "bomb.png")
+            },
+            {
+                "name": "sliced_bomb",
+                "path": path.join(IMAGES_PATH, "sliced_bomb.png")
             }
          )
 
@@ -105,6 +181,13 @@ def load_image(image_name):
         - arrow_left
         - arrow_right
         - scores_board
+        - apple, sliced_apple, iced_apple
+        - banana, sliced_banana, iced_banana
+        - kiwi, sliced_kiwi, iced_kiwi
+        - orange, sliced_orange, iced_orange
+        - pineapple, sliced_orange, iced_orange
+        - bomb, iced_bomb
+        - ice_cube, sliced_ice_cube
     - states returned:
         0. image loaded successfully
         1. unknown image name
