@@ -2,16 +2,20 @@
 
 import pygame
 from src.game_function import *
+from src.assets_management import *
+
+
 
 # Main program
-
-
 def game(window_surface, clock):
 
 
-    is_running = True
 
+    
+    #-----------------
     # Variables
+    #-----------------
+
     letters = []
     spawn_timer = 0.0
     lives = LIFE_MAX
@@ -26,10 +30,15 @@ def game(window_surface, clock):
 
     print("\n \n --- Fruit Slicer TEST TERMINAL  ---\n \n")
 
-    
+
+    is_running = True
+
+    #-----------------
+    # LOOP GAME
+    #-----------------
 
     while is_running:
-
+        
         # Frame
         delta = clock.tick(FPS) / 1000
         if not frozen:
@@ -38,9 +47,6 @@ def game(window_surface, clock):
         # Timer
         if timmer_running:
             game_timer += delta
-            return game_timer
-        
-        
 
 
         # Combo
@@ -93,9 +99,5 @@ def game(window_surface, clock):
             print("\n Perdu !")
             is_running = False
 
-
-        
-
-        
         pygame.display.update()
-    pygame.quit()
+pygame.quit()

@@ -2,6 +2,7 @@ import pygame
 
 from pathlib import Path
 from src.assets_management import blit_image, load_image
+from src.game import *
 
 #---------------
 # CONSTANTS
@@ -90,8 +91,8 @@ def menu(window_surface,custom_fonts_tuple,clock):
     arrow_right_png = pygame.transform.scale(arrow_right_png, (60, 60))
 
     ## Background
-    #menu_background = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "menu_background.png").convert()
-    #menu_background = pygame.transform.scale(menu_background,(1300, 731))
+    menu_background = pygame.image.load(Path(__file__).parent.parent / "assets" / "images" / "menu_background.png").convert()
+    menu_background = pygame.transform.scale(menu_background,(1300, 731))
     running = True
     difficulty_index = 0
     
@@ -153,8 +154,8 @@ def menu(window_surface,custom_fonts_tuple,clock):
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 # Play Button
-                if difficulty_button.collidepoint(event.pos):
-                    pass
+                if play_button.collidepoint(event.pos):
+                    game(window_surface, clock)
                 # Options Button
                 elif options_button.collidepoint(event.pos):
                     pass
