@@ -10,7 +10,7 @@ SCORE_ADD = 1
 
 # Time
 FPS = 60
-TIME_INIT_LETTERS = 2.0
+TIME_INIT_LETTERS = 5.0
 SPAW_INIT = 1.0
 SPEED_RATIO = 0.80
 MAX_COMBO = 3
@@ -27,9 +27,9 @@ def create_letter(element_type):
     "type" : element_type}
 
 def spawn_letter(letters):
-    if random.random() > 0.85 :
+    if random.random() > 1.00 :
         letters.append(create_letter("ICECUBE"))
-    elif random.random() > 0.60 :
+    elif random.random() > 1.00 :
         letters.append(create_letter("BOMB"))
     else: 
         letters.append(create_letter("FRUIT"))
@@ -58,29 +58,31 @@ def update_letters(letters, delta, combo, frozen = False):
         combo = 0
     return lost_life, combo
 
-def slice_element(letters, key, combo):
-    hit = False
+def slice_element(letters, key, combo, combo_valid):
+    combo_hit = False
     icecube_hit = False
+    bomb_hit = False
     score = 0
+    
 
     for letter in letters[:]:
         if letter["char"] == key:
+
             if letter["type"] == "BOMB":
-                pass # Game Over
+                bomb_hit = True 
             elif letter["type"] == "ICECUBE":
                 icecube_hit = True
-            letters.remove(letter)
-            hit = True
-            break
 
-    if hit == True:
-        combo = min(combo, MAX_COMBO)
-        combo += 1
-        score = combo_add_score(1, combo)
-    else:
-        combo = 0
-        score = 0
-    return score, combo, icecube_hit
+            letters.remove(letter)
+
+            if combo_valid:
+                combo = min(combo + 1, MAX_COMBO)
+            else :
+                combo = 0
+        score = 1 + combo
+        break
+            
+    return score, combo, icecube_hit, bomb_hit
 
 def combo_add_score(score, combo):
     return score * (1 + combo)
