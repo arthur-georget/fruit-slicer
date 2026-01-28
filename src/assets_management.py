@@ -34,6 +34,10 @@ images = (
             {
                 "name": "arrow_right",
                 "path": path.join(IMAGES_PATH, "arrow_right.png")
+            },
+            {
+                "name": "scores_board",
+                "path": path.join(IMAGES_PATH, "scores_board.png")
             }
          )
 
@@ -100,6 +104,7 @@ def blit_image(surface, image_name, x_pos, y_pos, centered=False, filling=True):
         - option_background
         - arrow_left
         - arrow_right
+        - scores_board
     - states returned:
         0. image draw successfully
         1. unknown image name
