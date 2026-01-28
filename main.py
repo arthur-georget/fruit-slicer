@@ -2,7 +2,11 @@ import pygame
 from src.assets_management import *
 from src.menu import menu
 
+
+
+
 # Variables
+
 
 # Main program
 

@@ -83,8 +83,8 @@ def menu(window_surface,custom_fonts_tuple,clock):
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 # Play Button
-                if difficulty_button.collidepoint(event.pos):
-                    pass
+                if play_button.collidepoint(event.pos):
+                    game(window_surface, clock)
                 # Options Button
                 elif options_button.collidepoint(event.pos):
                     pass
