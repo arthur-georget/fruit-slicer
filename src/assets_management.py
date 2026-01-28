@@ -92,10 +92,10 @@ sounds = (
             }
          )
 
-def blit_image(surface, image_name, x_pos, y_pos, centered=False, filling=True):
+def load_image(image_name):
 
     '''
-    draw image in pygame using friendly name.
+    load image in pygame surface using user friendly name.
     - image names:
         - logo
         - menu_background
@@ -106,19 +106,16 @@ def blit_image(surface, image_name, x_pos, y_pos, centered=False, filling=True):
         - arrow_right
         - scores_board
     - states returned:
-        0. image draw successfully
+        0. image loaded successfully
         1. unknown image name
         2. image not found, there's likely a problem in the path
         3. unhandled error
     ### PARAMETER
-        surface: pygame.Surface
         image_name: str
-        x_pos: int horizontal distance from surface left side
-        y_pos: int vertical distance from surface top side
-        centered: bool default:False define whether is centered or not around the position provided
-        filling: bool default:True define whether the image must fill or not completely the surface
     ### RETURN
-        state: int
+        image_loaded: pygame.Surface
+        or
+        error_index: int
     '''
 
     try:
@@ -126,21 +123,72 @@ def blit_image(surface, image_name, x_pos, y_pos, centered=False, filling=True):
             if image_available["name"] == image_name:
                 try:
                     image_loaded = image.load(image_available["path"])
-                    if filling:
-                        image_loaded = transform.scale(image_loaded,(surface.get_width(),surface.get_height()))
                 except:
-                    print("blit_image(): image not found, there's likely a problem in the path")
-                    return 2
-                if centered:
-                    x_pos = (x_pos - image_loaded.get_width()/2)
-                    y_pos = (y_pos - image_loaded.get_height()/2)
-                surface.blit(image_loaded, (x_pos, y_pos))
-                return 0
-        print("blit_image(): unknown image name")
+                    print("load_image(): image not found, there's likely a problem in the path")
+                    return 2 
+                return image_loaded
+        print("load_image(): unknown image name")
         return 1             
     except:
-        print("blit_image(): unhandled error in blit_image()")
+        print("load_image(): unhandled error")
         return 3
+    
+def blit_image(surface, image_loaded, x_pos=0, y_pos=0, center_anchor=False, center_vertically=False, center_horizontally=False, fill=False):
+
+    '''
+    blit image loaded on provided surface, easy fill or center the image with 
+    center_vertically, center_horizontally or fill bool parameters.
+    - states:
+        0. image successfully blitted
+        1. error when trying to blit
+        2. error when trying to scale
+        3. error when trying to center anchor
+        4. error when trying to horizontally center
+        5. error when trying to vertically center
+    ### PARAMETER
+        surface: pygame.Surface
+        image_loaded: str
+        x_pos: int horizontal distance from surface left side
+        y_pos: int vertical distance from surface top side
+        center_anchor: bool default:False define whether the x_pos and y_pos are calculated from image_loaded top left corner or image_loaded center
+        center_vertically: bool default:False define whether is vertically centered or not around the position provided
+        center_horizontally: bool default:False define whether is horizontally centered or not around the position provided
+        fill: bool default:False define whether the image must fill or not completely the surface
+    ### RETURN
+        state: int
+    '''
+        
+    try:
+        try:
+            if fill:
+                image_loaded = transform.scale(image_loaded,(surface.get_width(),surface.get_height()))
+        except:
+            print(f"blit_image(): error when trying to scale {image_loaded}")
+            return 2
+        try:   
+            if center_anchor:
+                x_pos = (x_pos - image_loaded.get_width()/2)
+                y_pos = (y_pos - image_loaded.get_height()/2)
+        except:
+            print(f"blit_image(): error when trying to center {image_loaded} anchor")
+            return 3
+        try:
+            if center_horizontally:
+                x_pos = surface.get_width()/2 - image_loaded.get_width()/2
+        except:
+            print(f"blit_image(): error when trying to horizontally center {image_loaded}")
+            return 4
+        try:
+            if center_vertically:
+                y_pos = surface.get_height()/2 - image_loaded.get_height()/2
+        except:
+            print(f"blit_image(): error when trying to vertically center {image_loaded}")
+            return 5
+        surface.blit(image_loaded, (x_pos, y_pos))
+        return 0
+    except:
+        print(f"blit_image(): error when trying to blit {image_loaded}")
+        return 1
 
 def play_sound(sound_name, looping=False):
 
