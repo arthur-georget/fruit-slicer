@@ -12,10 +12,9 @@ if __name__ == "__main__":
     pygame.mixer.init()
 
     pygame.display.set_caption('Fruits Slicer')
-    window_surface = pygame.display.set_mode((1000, 562))
+    window_surface = pygame.display.set_mode((1300, 731))
 
-    background = pygame.Surface((1000, 562))
-    background.fill(pygame.Color('#000000'))
+    background = pygame.Surface((1300, 731))
     blit_image(window_surface, "menu_background", 0,0,centered=False)
 
     clock = pygame.time.Clock()
