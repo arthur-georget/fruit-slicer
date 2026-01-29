@@ -16,74 +16,60 @@ SPEED_RATIO = 0.80
 MAX_COMBO = 3
 FREEZE_DURATION = 10.0
 
-
-
 # Functions
 
-def create_letter(element_type,x_pos,y_pos,image_name,letters):
-    letters_already_there = ""
-    for letter in letters:
-        letters_already_there += letter["char"]
-    char_to_return = random.choice(KEYBOARD)
-    while char_to_return in letters_already_there: 
-        char_to_return = random.choice(KEYBOARD)
+def create_element(element_type,x_pos,y_pos,image_name):
     return {
-    "char" : char_to_return,
+    "char" : random.choice(KEYBOARD),
     "x_pos" : x_pos,
     "y_pos" : y_pos,
     "time_left" : TIME_INIT_LETTERS,
     "type" : element_type,
     "image_name": image_name}
 
-def spawn_letter(letters):
+def spawn_element(elements):
     if random.random() > 0.9 :
-        letters.append(create_letter("ICECUBE",random.randrange(0,1000,10),random.randrange(0,500,10),"ice_cube",letters))
+        elements.append(create_element("ICECUBE",random.randrange(0,1000,10),random.randrange(0,500,10),"ice_cube"))
     elif random.random() > 0.8 :
-        letters.append(create_letter("BOMB",random.randrange(0,1000,10),random.randrange(0,500,10),"bomb",letters))
+        elements.append(create_element("BOMB",random.randrange(0,1000,10),random.randrange(0,500,10),"bomb"))
     else: 
-        letters.append(create_letter("FRUIT",random.randrange(0,1000,10),random.randrange(0,500,10),random.choice(FRUITS),letters))
+        elements.append(create_element("FRUIT",random.randrange(0,1000,10),random.randrange(0,500,10),random.choice(FRUITS)))
     return 0.0
 
-def update_letters(letters, delta, combo, frozen = False):
+def update_elements(elements, delta, combo, frozen = False):
     broken_combo = False
-    lost_life = 0
+    life_lost = 0
     
-    # Try list letters
-    for letter in letters[:]:
+    for element in elements[:]:
         if frozen == True:
             pass
         else:    
-            letter["time_left"] -= delta * SPEED_RATIO
+            element["time_left"] -= delta * SPEED_RATIO
 
-        # Stand by for test
-        # print(letter["time_left"]) 
-
-        if letter["time_left"] <= 0:
-            letters.remove(letter)
-            lost_life += 1
+        if element["time_left"] <= 0:
+            elements.remove(element)
+            life_lost += 1
             broken_combo = True
 
-    # Combo borken 
+    # Combo broken 
     if broken_combo == True:
         combo = 0
-    return lost_life, combo
+    return life_lost, combo
 
-def slice_element(letters, key, combo, combo_valid):
-    combo_hit = False
+def slice_element(elements, key, combo, combo_valid):
     icecube_hit = False
     bomb_hit = False
     score = 0
-    
 
-    for letter in letters[:]:
-        if letter["char"] == key:
+    for element in elements[:]:
+        if element["char"] == key:
 
-            if letter["type"] == "BOMB":
+            if element["type"] == "BOMB":
                 bomb_hit = True 
-            elif letter["type"] == "ICECUBE":
+            elif element["type"] == "ICECUBE":
                 icecube_hit = True
 
-            letters.remove(letter)
+            elements.remove(element)
 
             if combo_valid:
                 combo = min(combo + 1, MAX_COMBO)
@@ -96,4 +82,3 @@ def slice_element(letters, key, combo, combo_valid):
 
 def combo_add_score(score, combo):
     return score * (1 + combo)
-

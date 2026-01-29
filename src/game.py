@@ -53,7 +53,7 @@ def game(window_surface, custom_fonts_tuple, clock):
     # Variables
     #-----------------
 
-    letters = []
+    elements = []
     spawn_timer = 0.0
     lives = LIFE_MAX
     score = 0
@@ -86,7 +86,29 @@ def game(window_surface, custom_fonts_tuple, clock):
 
     while is_running:
         
+        ########### DISPLAY ######################################
+
         window_surface.blit(game_background_image, (0,0))
+
+        # Blit elements in screen
+        for element in elements:
+            char_to_blit = custom_fonts_tuple[0].render(element["char"], True, (255,255,255))
+            time_left_to_blit = custom_fonts_tuple[0].render(str(int(element["time_left"])), True, (255,255,255))
+            if frozen:
+                image_to_blit = transform.scale(images[element["image_name"]]["iced"], (100, 100))
+            else:
+                image_to_blit = transform.scale(images[element["image_name"]]["normal"], (100, 100))
+            window_surface.blit(image_to_blit,(element["x_pos"],element["y_pos"]))
+            window_surface.blit(char_to_blit,(element["x_pos"],element["y_pos"]))
+            window_surface.blit(time_left_to_blit,(element["x_pos"],element["y_pos"]+40))
+        
+        score_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (255,255,255))
+        lives_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (255,255,255))
+        window_surface.blit(score_to_blit,(0,100))
+        window_surface.blit(lives_to_blit,(0,200))
+
+        ############ LOGIC #######################################
+
         # Frame
         delta = clock.tick(FPS) / 1000
         if not frozen:
@@ -107,25 +129,15 @@ def game(window_surface, custom_fonts_tuple, clock):
         if freeze_timer < 0:
             freeze_timer = 0
         frozen = freeze_timer > 0
-        if frozen:
-            print(f"FROZEN") # debug en stand by
 
-        # Spawn Letters
+        # Spawn Fruits, bombs and icecubes
         spawn_delay = SPAW_INIT / SPEED_RATIO
         if spawn_timer >= spawn_delay:
-            spawn_timer = spawn_letter(letters)
+            spawn_timer = spawn_element(elements)
         
-        # Blit elements in screen
-        for element in letters:
-            char_to_blit = custom_fonts_tuple[0].render(element["char"], True, (255,255,255))
-            image_to_blit = transform.scale(images[element["image_name"]]["normal"], (100, 100))
-            window_surface.blit(image_to_blit,(element["x_pos"],element["y_pos"]))
-            window_surface.blit(char_to_blit,(element["x_pos"],element["y_pos"]))
-
         # Lives 
-        lost_life, combo = update_letters(letters, delta, combo, frozen)
-        lives -= lost_life
-
+        life_lost, combo = update_elements(elements, delta, combo, frozen)
+        lives -= life_lost
 
         # Events
         for event in pygame.event.get():
@@ -134,21 +146,18 @@ def game(window_surface, custom_fonts_tuple, clock):
 
             elif event.type == pygame.KEYDOWN:
                 key = event.unicode.upper()
-                score_add, combo, icecube_hit, bomb_hit = slice_element(letters, key, combo, combo_valid)
+                score_add, combo, icecube_hit, bomb_hit = slice_element(elements, key, combo, combo_valid)
                 score += score_add
                 if icecube_hit:
                     freeze_timer = FREEZE_DURATION
-                    print("Glacon touché") # debug en stand by
+                    print("Glacon touché")
                 elif bomb_hit:
-                    lives = lost_life * 3
-                    print("\n BOOOOOOOM !") # debug en stand by
+                    lives = life_lost * 3
+                    print("\n BOOOOOOOM !")
                 if score_add > 0:
-                    combo_timer = 1.0 # timer combo ( 1seconde atm )
+                    combo_timer = 1.0
 
-        # Stand by test terminal --- A SUPPRIMER PAR LA SUITE ---
-        print(f"\rLettres: {[l['type'] for l in letters]} | {[l['char'] for l in letters]} | Score: {score} | Vies: {lives}", end="")
-
-        # Lose
+        # Game Over
         if lives <= 0:
             print("\n Perdu !")
             is_running = False
