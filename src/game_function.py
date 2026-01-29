@@ -1,5 +1,9 @@
 import random
-from pygame import math
+import pygame
+from src.assets_management import *
+from src.button import *
+
+# --- CONSTANT ---
 
 KEYBOARD = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$")
 FRUITS = ("apple","banana","kiwi","orange","pineapple")
@@ -12,7 +16,18 @@ TIME_INIT_LETTERS = 5.0
 SPAWN_INIT = 1.0
 SPEED_RATIO = 0.80
 MAX_COMBO = 3
-FREEZE_DURATION = 3.0
+FREEZE_DURATION = 10.0
+
+# Color
+WHITE = (255, 255, 255)
+
+
+# Button load 
+PAUSE_BUTTON = load_image("button_background")
+PAUSE_BUTTON_HOVER = load_image("button_background_hover_2")
+
+# Font
+
 
 # Functions
 
@@ -25,7 +40,7 @@ def create_element(element_type,x_pos,y_pos,image_name,assigned_chars):
     "char" : char_to_assign,
     "x_pos" : x_pos,
     "y_pos" : y_pos,
-    "velocity" : math.Vector2(0,0),
+    "velocity" : pygame.math.Vector2(0,0),
     "time_left" : TIME_INIT_LETTERS,
     "type" : element_type,
     "sliced": False,
@@ -93,3 +108,55 @@ def slice_element(elements, assigned_chars, key, combo, combo_valid):
 
 def combo_add_score(score, combo):
     return score * (1 + combo)
+
+def game_pause(window_surface, custom_fonts_tuple):
+    
+
+
+    overlay = pygame.Surface(window_surface.get_size(), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 200))
+    window_surface.blit(overlay, (0, 0))
+
+    while True:
+        mouse_pos = pygame.mouse.get_pos()
+
+        
+
+
+        # Text
+        draw_text("PAUSE", 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
+
+
+        # - Buttons -
+
+        # Resume
+        resume_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y - 20,    BUTTON_WIDTH, BUTTON_HEIGHT)
+        resum_img = (PAUSE_BUTTON_HOVER if resume_button.collidepoint(mouse_pos) else   PAUSE_BUTTON)
+        blit_rect(window_surface, resume_button, resum_img, rect=True)
+        draw_text("REPRENDRE", 36, WHITE, resume_button.center, window_surface, custom_fonts_tuple[0])
+
+        # menu
+        menu_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y + 60,  BUTTON_WIDTH, BUTTON_HEIGHT)
+        option_img = (PAUSE_BUTTON_HOVER if menu_button.collidepoint(mouse_pos) else    PAUSE_BUTTON)
+        blit_rect(window_surface, menu_button, option_img, rect=True)
+        draw_text("MENU", 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
+
+
+        for event in pygame.event.get():
+
+
+            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return 0
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if resume_button.collidepoint(event.pos):
+                    return 0
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if menu_button.collidepoint(event.pos):
+                    return 1
+
+
+        pygame.display.update()
+
