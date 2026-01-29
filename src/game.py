@@ -41,20 +41,17 @@ PURPLE = (200, 50, 50)
 BUTTON_WIDTH = 300
 BUTTON_HEIGHT = 70
 
-def draw_text(text, size, color, center, window_surface,custom_font):
-    #Draw text with color size and window_surface#
-    text_surface = custom_font.render(text, True, color)
-    text_rect = text_surface.get_rect(center=center)
-    window_surface.blit(text_surface, text_rect)
+
 
 # Main program
-def game(window_surface, clock):
+def game(window_surface, custom_fonts_tuple, clock):
 
     
     #-----------------
     # Variables
     #-----------------
 
+    pause = False
     letters = []
     spawn_timer = 0.0
     lives = LIFE_MAX
@@ -72,7 +69,7 @@ def game(window_surface, clock):
 
     is_running = True
 
-    #-----------------
+    #-----------------a
     # LOOP GAME
     #-----------------
 
@@ -117,9 +114,20 @@ def game(window_surface, clock):
             if event.type == pygame.QUIT:
                 is_running = False
 
+            # Pause
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    result = game_pause(window_surface, custom_fonts_tuple[0])
+                    
+                    if result == 0:
+                        pass
+                    elif result == 1:
+                        return
+
+            # Game
+            elif event.type == pygame.KEYDOWN and not pause:
                 key = event.unicode.upper()
-                score_add, combo, icecube_hit, bomb_hit = slice_element(letters, key, combo, combo_valid)
+                score_add, combo, icecube_hit, bomb_hit = slice_element(letters, key, combo,combo_valid)
                 score += score_add
                 if icecube_hit:
                     freeze_timer = FREEZE_DURATION
