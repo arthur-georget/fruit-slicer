@@ -1,8 +1,7 @@
 import pygame
 from src.button import *
 from pathlib import Path
-from src.game import game
-from src.assets_management import load_image, blit_image
+from src.assets_management import blit_rect, blit_display, blit_arrow
 
 #-------#
 # MUSIC
@@ -10,33 +9,6 @@ from src.assets_management import load_image, blit_image
 #pygame.mixer.music.load()
 #pygame.mixer.music.set_volume(0.5)
 #pygame.mixer.music.play(-1)
-
-#-------#
-# COLORS
-#-------#
-#Remove or change file after test
-WHITE = (255, 255, 255)
-RED = (180, 30, 30)
-GREEN = (0, 255, 78)
-YELLOW = (255, 255, 0, 255)
-PURPLE = (200, 50, 50)
-
-#------------#
-# DIFFICULTY
-#------------#
-
-difficulties = [
-    "EASY",
-    "MEDIUM",
-    "HARD",
-    "G0D LIK3"]
-
-difficulty_color = [
-    GREEN,     # easy
-    YELLOW,   # medium
-    PURPLE,   # hard 
-    RED,   # god_like
-]
 
 # Menu
 def menu(window_surface,custom_fonts_tuple,clock):
@@ -47,27 +19,28 @@ def menu(window_surface,custom_fonts_tuple,clock):
     difficulty_index = 0
     
     while True:
-        window_surface.blit(menu_background, (0, 0))
+        blit_display(window_surface, window_surface, menu_background, disp= True)
         mouse_pos = pygame.mouse.get_pos()
         ##Score
         # Button Play
         play_image = (button_background_hover if play_button.collidepoint(mouse_pos)else button_background)
-        blit_image(window_surface, play_button,play_image, fill= True)
+        blit_rect(window_surface, play_button,play_image, rect= True)
         draw_text("PLAY", 36, WHITE, play_button.center, window_surface,custom_fonts_tuple[0]) 
 
         # Button Options
         options_image = (button_background_hover if options_button.collidepoint(mouse_pos)else button_background)
-        blit_image(window_surface,options_button,options_image, fill = True)
+        blit_rect(window_surface,options_button,options_image, rect= True)
         draw_text("OPTIONS", 36, WHITE, options_button.center, window_surface,custom_fonts_tuple[0])
 
         # Button Exit
-        exit_img =  (button_background_hover_scale_exit if exit_button.collidepoint(mouse_pos)else button_background_scale_exit)
-        window_surface.blit(exit_img, exit_button)
+        exit_img =  (button_background_hover if exit_button.collidepoint(mouse_pos)else button_background)
+        blit_rect(window_surface,exit_button,exit_img, rect= True)
         draw_text("EXIT", 36, WHITE, exit_button.center, window_surface,custom_fonts_tuple[0])
 
-        # Difficulty swap
-        blit_image(window_surface, difficulty_button, button_background_hover, fill= True)
+        # Difficulty button and swap
+        blit_rect(window_surface, difficulty_button, button_background_hover, rect= True)
         draw_text(difficulties[difficulty_index],36, difficulty_color[difficulty_index], difficulty_button.center, window_surface,custom_fonts_tuple[0])
+        
         # Arrow blit
         window_surface.blit(arrow_left_png, left_arrow_rect)
         window_surface.blit(arrow_right_png, right_arrow_rect)
@@ -88,6 +61,8 @@ def menu(window_surface,custom_fonts_tuple,clock):
                     game(window_surface, custom_fonts_tuple, clock)
                 # Options Button
                 elif options_button.collidepoint(event.pos):
+                    pass
+                elif difficulty_button.collidepoint(event.pos):
                     pass
                     
                 # Left Arrow

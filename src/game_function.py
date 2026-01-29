@@ -5,10 +5,8 @@ from src.button import *
 
 # --- CONSTANT ---
 
-# Keyboard inc
-KEYBOARD = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$"]
-
-# Gameplay
+KEYBOARD = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$")
+FRUITS = ("apple","banana","kiwi","orange","pineapple")
 LIFE_MAX = 3
 SCORE_ADD = 1
 
@@ -18,85 +16,81 @@ TIME_INIT_LETTERS = 5.0
 SPAW_INIT = 1.0
 SPEED_RATIO = 0.80
 MAX_COMBO = 3
-FREEZE_DURATION = 10.0
-
-# Color
-WHITE = (255, 255, 255)
-
-
-# Button load 
-PAUSE_BUTTON = load_image("button_background")
-PAUSE_BUTTON_HOVER = load_image("button_background_hover_2")
-
-# Font
-
+FREEZE_DURATION = 3.0
 
 # Functions
 
-def create_letter(element_type):
+def create_element(element_type,x_pos,y_pos,image_name,assigned_chars):
+    char_to_assign = random.choice(KEYBOARD)
+    while char_to_assign in assigned_chars:
+        char_to_assign = random.choice(KEYBOARD)
     return {
-    "char" : random.choice(KEYBOARD),
+    "char" : char_to_assign,
+    "x_pos" : x_pos,
+    "y_pos" : y_pos,
     "time_left" : TIME_INIT_LETTERS,
-    "type" : element_type}
+    "type" : element_type,
+    "image_name": image_name}, assigned_chars
 
-def spawn_letter(letters):
-    if random.random() > 1.00 :
-        letters.append(create_letter("ICECUBE"))
-    elif random.random() > 1.00 :
-        letters.append(create_letter("BOMB"))
-    else: 
-        letters.append(create_letter("FRUIT"))
-    return 0.0
+def spawn_element(elements, assigned_chars):
+    if random.random() > 0.9 :
+        new_element, assigned_chars = create_element("ICECUBE",random.randrange(0,1000,10),random.randrange(0,500,10),"ice_cube", assigned_chars)
+        elements.append(new_element)
+    elif random.random() > 0.8 :
+        new_element, assigned_chars = create_element("BOMB",random.randrange(0,1000,10),random.randrange(0,500,10),"bomb", assigned_chars)
+        elements.append(new_element)
+    else:
+        new_element, assigned_chars = create_element("FRUIT",random.randrange(0,1000,10),random.randrange(0,500,10),random.choice(FRUITS), assigned_chars)
+        elements.append(new_element)
+    return 0.0, assigned_chars
 
-def update_letters(letters, delta, combo, frozen = False):
+def update_elements(elements, assigned_chars, delta, combo, frozen = False):
     broken_combo = False
-    lost_life = 0
+    life_lost = 0
     
-    # Try list letters
-    for letter in letters[:]:
+    for element in elements[:]:
         if frozen == True:
             pass
         else:    
-            letter["time_left"] -= delta * SPEED_RATIO
+            element["time_left"] -= delta * SPEED_RATIO
 
-        # Stand by for test
-        # print(letter["time_left"]) 
+        if element["time_left"] <= 0:
+            assigned_chars.replace(element["char"], '')
+            if not (element["type"] == "BOMB" or element["type"] == "ICECUBE"):
+                life_lost += 1
+                broken_combo = True
+            elements.remove(element)
 
-        if letter["time_left"] <= 0:
-            letters.remove(letter)
-            lost_life += 1
-            broken_combo = True
-
-    # Combo borken 
+    # Combo broken 
     if broken_combo == True:
         combo = 0
-    return lost_life, combo
+    return life_lost, combo, assigned_chars
 
-def slice_element(letters, key, combo, combo_valid):
-    combo_hit = False
+def slice_element(elements, assigned_chars, key, combo, combo_valid):
     icecube_hit = False
     bomb_hit = False
     score = 0
-    
 
-    for letter in letters[:]:
-        if letter["char"] == key:
-
-            if letter["type"] == "BOMB":
-                bomb_hit = True 
-            elif letter["type"] == "ICECUBE":
-                icecube_hit = True
-
-            letters.remove(letter)
+    for element in elements:
+        if element["char"] == key:
+            if not element["type"] == "FRUIT":
+                if element["type"] == "BOMB":
+                    bomb_hit = True
+                elif element["type"] == "ICECUBE":
+                    icecube_hit = True
+                assigned_chars.replace(element["char"], '')
+                elements.remove(element)
+                break
+            assigned_chars.replace(element["char"], '')
+            elements.remove(element)
 
             if combo_valid:
                 combo = min(combo + 1, MAX_COMBO)
             else :
                 combo = 0
-            score = 1 + combo
-        break
-            
-    return score, combo, icecube_hit, bomb_hit
+                score = 1 + combo
+        
+    return score, combo, icecube_hit, bomb_hit, assigned_chars
 
 def combo_add_score(score, combo):
     return score * (1 + combo)
