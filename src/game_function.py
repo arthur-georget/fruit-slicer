@@ -80,7 +80,7 @@ def slice_element(letters, key, combo, combo_valid):
                 combo = min(combo + 1, MAX_COMBO)
             else :
                 combo = 0
-        score = 1 + combo
+            score = 1 + combo
         break
             
     return score, combo, icecube_hit, bomb_hit
