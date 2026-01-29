@@ -2,56 +2,7 @@ import pygame
 from src.game_function import *
 from src.assets_management import *
 
-
-
-# window_surface Size
-HEIGHT = 731
-WIDTH = 1300  
-
-#Center window_surface
-center_x = WIDTH // 2
-center_y = HEIGHT // 2
-
-#-------#
-# MUSIC
-#-------#
-#pygame.mixer.music.load()
-#pygame.mixer.music.set_volume(0.5)
-#pygame.mixer.music.play(-1)
-
-#-------#
-# COLORS
-#-------#
-#Remove or change file after test
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GRAY = (100, 100, 100)
-BLUE = (50, 100, 200)
-LIGHT_BLUE = (0, 123, 255, 255)
-RED = (180, 30, 30)
-LIGHT_RED = (255, 0, 46, 255)
-GREEN = (0, 255, 78)
-DARK_GREEN = (0, 185, 78, 255)
-YELLOW = (255, 255, 0, 255)
-PURPLE = (200, 50, 50)
-
-# Button size
-BUTTON_WIDTH = 300
-BUTTON_HEIGHT = 70
-
-def draw_text(text, size, color, center, window_surface,custom_font):
-    #Draw text with color size and window_surface#
-    text_surface = custom_font.render(text, True, color)
-    text_rect = text_surface.get_rect(center=center)
-    window_surface.blit(text_surface, text_rect)
-
-# Main program
 def game(window_surface, custom_fonts_tuple, clock):
-
-    
-    #-----------------
-    # Variables
-    #-----------------
 
     elements = []
     assigned_chars = ""
@@ -64,6 +15,7 @@ def game(window_surface, custom_fonts_tuple, clock):
     combo_timer = 0.0
     game_timer = 0.0
     timmer_running = True
+
     game_background_image = load_image("game_background")
 
     images = {
@@ -76,18 +28,11 @@ def game(window_surface, custom_fonts_tuple, clock):
                 "ice_cube": {"normal": load_image("ice_cube"), "iced": load_image("ice_cube"), "sliced": load_image("sliced_ice_cube")}
             }
 
-    print("\n \n --- Fruit Slicer TEST TERMINAL  ---\n \n")
-
-
     is_running = True
-
-    #-----------------
-    # LOOP GAME
-    #-----------------
 
     while is_running:
         
-        ########### DISPLAY ######################################
+        ################################## RENDERING ######################################
 
         window_surface.blit(game_background_image, (0,0))
 
@@ -96,19 +41,28 @@ def game(window_surface, custom_fonts_tuple, clock):
             char_to_blit = custom_fonts_tuple[0].render(element["char"], True, (255,255,255))
             time_left_to_blit = custom_fonts_tuple[0].render(str(int(element["time_left"])), True, (255,255,255))
             if frozen:
-                image_to_blit = transform.scale(images[element["image_name"]]["iced"], (100, 100))
+                element_image = transform.scale(images[element["image_name"]]["iced"], (100, 100))
+                element_rect = element_image.get_rect()
+                element_rect.center = (element["x_pos"], element["y_pos"])
             else:
-                image_to_blit = transform.scale(images[element["image_name"]]["normal"], (100, 100))
-            window_surface.blit(image_to_blit,(element["x_pos"],element["y_pos"]))
-            window_surface.blit(char_to_blit,(element["x_pos"],element["y_pos"]))
-            window_surface.blit(time_left_to_blit,(element["x_pos"],element["y_pos"]+40))
+                element["velocity"].y += .05
+                element_image = transform.scale(images[element["image_name"]]["normal"], (100, 100))
+                element_rect = element_image.get_rect()
+                element_rect.center = (element["x_pos"], element["y_pos"])
+                element_rect.center += element["velocity"]
+                element["x_pos"] += element["velocity"].x
+                element["y_pos"] += element["velocity"].y
+
+            window_surface.blit(element_image,element_rect)
+            window_surface.blit(char_to_blit,(element["x_pos"]+40,element["y_pos"]))
+            window_surface.blit(time_left_to_blit,(element["x_pos"]+40,element["y_pos"]+40))
         
         score_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (255,255,255))
         lives_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (255,255,255))
         window_surface.blit(score_to_blit,(0,100))
         window_surface.blit(lives_to_blit,(0,200))
 
-        ############ LOGIC #######################################
+        ################################## LOGIC ######################################
 
         # Frame
         delta = clock.tick(FPS) / 1000
@@ -132,7 +86,7 @@ def game(window_surface, custom_fonts_tuple, clock):
         frozen = freeze_timer > 0
 
         # Spawn Fruits, bombs and icecubes
-        spawn_delay = SPAW_INIT / SPEED_RATIO
+        spawn_delay = SPAWN_INIT / SPEED_RATIO
         if spawn_timer >= spawn_delay:
             spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
         
@@ -160,7 +114,7 @@ def game(window_surface, custom_fonts_tuple, clock):
 
         # Game Over
         if lives <= 0:
-            print("\n Perdu !")
+            print("\n Game Over !")
             is_running = False
 
         pygame.display.update()
