@@ -146,7 +146,7 @@ def game(window_surface, custom_fonts_tuple, clock):
 
             elif event.type == pygame.KEYDOWN:
                 key = event.unicode.upper()
-                score_add, combo, icecube_hit, bomb_hit = slice_element(elements, key, combo, combo_valid)
+                elements, score_add, combo, icecube_hit, bomb_hit = slice_element(elements, key, combo, combo_valid)
                 score += score_add
                 if icecube_hit:
                     freeze_timer = FREEZE_DURATION

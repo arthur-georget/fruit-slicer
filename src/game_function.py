@@ -14,7 +14,7 @@ TIME_INIT_LETTERS = 5.0
 SPAW_INIT = 1.0
 SPEED_RATIO = 0.80
 MAX_COMBO = 3
-FREEZE_DURATION = 10.0
+FREEZE_DURATION = 3.0
 
 # Functions
 
@@ -48,8 +48,9 @@ def update_elements(elements, delta, combo, frozen = False):
 
         if element["time_left"] <= 0:
             elements.remove(element)
-            life_lost += 1
-            broken_combo = True
+            if not (element["type"] == "BOMB" or element["type"] == "ICECUBE"):
+                life_lost += 1
+                broken_combo = True
 
     # Combo broken 
     if broken_combo == True:
@@ -61,24 +62,24 @@ def slice_element(elements, key, combo, combo_valid):
     bomb_hit = False
     score = 0
 
-    for element in elements[:]:
+    for element in elements:
         if element["char"] == key:
-
-            if element["type"] == "BOMB":
-                bomb_hit = True 
-            elif element["type"] == "ICECUBE":
-                icecube_hit = True
-
+            if not element["type"] == "FRUIT":
+                if element["type"] == "BOMB":
+                    bomb_hit = True
+                elif element["type"] == "ICECUBE":
+                    icecube_hit = True
+                elements.remove(element)
+                break
             elements.remove(element)
 
             if combo_valid:
                 combo = min(combo + 1, MAX_COMBO)
             else :
                 combo = 0
-        score = 1 + combo
-        break
-            
-    return score, combo, icecube_hit, bomb_hit
+            score = 1 + combo
+        
+    return elements, score, combo, icecube_hit, bomb_hit
 
 def combo_add_score(score, combo):
     return score * (1 + combo)

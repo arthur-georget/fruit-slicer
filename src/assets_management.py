@@ -120,6 +120,10 @@ images = (
                 "path": path.join(IMAGES_PATH, "bomb.png")
             },
             {
+                "name": "iced_bomb",
+                "path": path.join(IMAGES_PATH, "iced_bomb.png")
+            },
+            {
                 "name": "sliced_bomb",
                 "path": path.join(IMAGES_PATH, "sliced_bomb.png")
             }
