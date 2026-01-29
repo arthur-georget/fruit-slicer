@@ -2,7 +2,7 @@ import pygame
 from src.button import *
 from pathlib import Path
 from src.assets_management import blit_rect, blit_display, blit_arrow
-
+from src.game import game
 #-------#
 # MUSIC
 #-------#
