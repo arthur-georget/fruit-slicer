@@ -16,7 +16,18 @@ TIME_INIT_LETTERS = 5.0
 SPAW_INIT = 1.0
 SPEED_RATIO = 0.80
 MAX_COMBO = 3
-FREEZE_DURATION = 3.0
+FREEZE_DURATION = 10.0
+
+# Color
+WHITE = (255, 255, 255)
+
+
+# Button load 
+PAUSE_BUTTON = load_image("button_background")
+PAUSE_BUTTON_HOVER = load_image("button_background_hover_2")
+
+# Font
+
 
 # Functions
 
@@ -88,7 +99,7 @@ def slice_element(elements, assigned_chars, key, combo, combo_valid):
                 combo = min(combo + 1, MAX_COMBO)
             else :
                 combo = 0
-                score = 1 + combo
+            score = 1 + combo
         
     return score, combo, icecube_hit, bomb_hit, assigned_chars
 
@@ -118,13 +129,13 @@ def game_pause(window_surface, custom_fonts_tuple):
         # Resume
         resume_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y - 20,    BUTTON_WIDTH, BUTTON_HEIGHT)
         resum_img = (PAUSE_BUTTON_HOVER if resume_button.collidepoint(mouse_pos) else   PAUSE_BUTTON)
-        blit_image(window_surface, resum_img, resume_button.x, resume_button.y, fill=True)
+        blit_rect(window_surface, resume_button, resum_img, rect=True)
         draw_text("REPRENDRE", 36, WHITE, resume_button.center, window_surface, custom_fonts_tuple[0])
 
         # menu
         menu_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y + 60,  BUTTON_WIDTH, BUTTON_HEIGHT)
         option_img = (PAUSE_BUTTON_HOVER if menu_button.collidepoint(mouse_pos) else    PAUSE_BUTTON)
-        blit_image(window_surface, option_img, menu_button.x, menu_button.y, fill=True)
+        blit_rect(window_surface, menu_button, option_img, rect=True)
         draw_text("MENU", 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
 
 

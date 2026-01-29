@@ -42,7 +42,7 @@ BUTTON_HEIGHT = 70
 
 
 # Main program
-def game(window_surface, custom_fonts_tuple, custom_fonts_tuple, clock):
+def game(window_surface, custom_fonts_tuple, clock):
 
     
     #-----------------
@@ -156,7 +156,7 @@ def game(window_surface, custom_fonts_tuple, custom_fonts_tuple, clock):
             elif event.type == pygame.KEYDOWN and not pause:
                 key = event.unicode.upper()
                 score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid)
-                score_add, combo, icecube_hit, bomb_hit = slice_element(letters, key, combo,combo_valid)
+                score_add, combo, icecube_hit, bomb_hit = slice_element(elements, key, combo,combo_valid)
                 score += score_add
                 if icecube_hit:
                     freeze_timer = FREEZE_DURATION

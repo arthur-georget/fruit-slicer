@@ -284,18 +284,13 @@ def blit_rect(window_screen, surface, image_loaded, x_pos=0, y_pos=0,rect = Fals
         state: int
     '''
         
-    try:
-        try:
-            if rect:
-                image_loaded = transform.scale(image_loaded,(surface.width, surface.height))
-        except:
-            print(f"blit_image(): error when trying to scale {image_loaded}")
-            return 2
-        window_screen.blit(image_loaded, surface)
-        return 0
-    except:
-        print(f"blit_image(): error when trying to blit {image_loaded}")
-        return 1
+    
+        
+    if rect:
+        image_loaded = transform.scale(image_loaded,(surface.width, surface.height))
+
+    window_screen.blit(image_loaded, surface)
+    return 0
 
 def blit_arrow(window_screen, surface, image_loaded, x_pos=0, y_pos=0, arrow= False):
 
