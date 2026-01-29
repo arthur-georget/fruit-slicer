@@ -85,7 +85,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
 
                 # Play Button
                 if play_button.collidepoint(event.pos):
-                    game(window_surface, clock)
+                    game(window_surface, custom_fonts_tuple, clock)
                 # Options Button
                 elif options_button.collidepoint(event.pos):
                     pass

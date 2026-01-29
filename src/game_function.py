@@ -1,6 +1,7 @@
 import random
 import pygame
 from src.assets_management import *
+from src.button import *
 
 # --- CONSTANT ---
 
@@ -22,28 +23,15 @@ FREEZE_DURATION = 10.0
 # Color
 WHITE = (255, 255, 255)
 
-# Size
-WIDTH = 1300
-HEIGHT = 731
-CENTER_X = WIDTH // 2
-CENTER_Y = HEIGHT // 2
 
 # Button load 
 PAUSE_BUTTON = load_image("button_background")
 PAUSE_BUTTON_HOVER = load_image("button_background_hover_2")
-BUTTON_WIDTH = 300
-BUTTON_HEIGHT = 70
 
 # Font
 
 
-
 # Functions
-def draw_text(text, size, color, center, window_surface,custom_font):
-    #Draw text with color size and window_surface#
-    text_surface = custom_font.render(text, True, color)
-    text_rect = text_surface.get_rect(center=center)
-    window_surface.blit(text_surface, text_rect)
 
 def create_letter(element_type):
     return {
@@ -114,33 +102,36 @@ def combo_add_score(score, combo):
     return score * (1 + combo)
 
 def game_pause(window_surface, custom_fonts_tuple):
+    
+
+
+    overlay = pygame.Surface(window_surface.get_size(), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 200))
+    window_surface.blit(overlay, (0, 0))
 
     while True:
         mouse_pos = pygame.mouse.get_pos()
 
-        overlay = pygame.Surface(window_surface.get_size())
-        overlay.set_alpha(180)
-        overlay.fill((0, 0, 0))
-        window_surface.blit(overlay, (0, 0))
+        
 
 
         # Text
-        draw_text("PAUSE", 80, WHITE, (CENTER_X, CENTER_Y - 180), window_surface, font)
+        draw_text("PAUSE", 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
 
 
         # - Buttons -
 
         # Resume
-        resume_button = pygame.Rect(CENTER_X - BUTTON_WIDTH // 2, CENTER_Y - 20,    BUTTON_WIDTH, BUTTON_HEIGHT)
+        resume_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y - 20,    BUTTON_WIDTH, BUTTON_HEIGHT)
         resum_img = (PAUSE_BUTTON_HOVER if resume_button.collidepoint(mouse_pos) else   PAUSE_BUTTON)
         blit_image(window_surface, resum_img, resume_button.x, resume_button.y, fill=True)
-        draw_text("REPRENDRE", 36, WHITE, resume_button.center, window_surface, font)
+        draw_text("REPRENDRE", 36, WHITE, resume_button.center, window_surface, custom_fonts_tuple[0])
 
         # menu
-        menu_button = pygame.Rect(CENTER_X - BUTTON_WIDTH // 2, CENTER_Y + 60,  BUTTON_WIDTH, BUTTON_HEIGHT)
+        menu_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y + 60,  BUTTON_WIDTH, BUTTON_HEIGHT)
         option_img = (PAUSE_BUTTON_HOVER if menu_button.collidepoint(mouse_pos) else    PAUSE_BUTTON)
         blit_image(window_surface, option_img, menu_button.x, menu_button.y, fill=True)
-        draw_text("MENU", 36, WHITE, menu_button.center, window_surface, font)
+        draw_text("MENU", 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
 
 
         for event in pygame.event.get():

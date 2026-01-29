@@ -117,7 +117,7 @@ def game(window_surface, custom_fonts_tuple, clock):
             # Pause
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    result = game_pause(window_surface, custom_fonts_tuple[0])
+                    result = game_pause(window_surface, custom_fonts_tuple)
                     
                     if result == 0:
                         pass
