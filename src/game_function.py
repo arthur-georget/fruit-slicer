@@ -18,25 +18,31 @@ FREEZE_DURATION = 3.0
 
 # Functions
 
-def create_element(element_type,x_pos,y_pos,image_name):
+def create_element(element_type,x_pos,y_pos,image_name,assigned_chars):
+    char_to_assign = random.choice(KEYBOARD)
+    while char_to_assign in assigned_chars:
+        char_to_assign = random.choice(KEYBOARD)
     return {
-    "char" : random.choice(KEYBOARD),
+    "char" : char_to_assign,
     "x_pos" : x_pos,
     "y_pos" : y_pos,
     "time_left" : TIME_INIT_LETTERS,
     "type" : element_type,
-    "image_name": image_name}
+    "image_name": image_name}, assigned_chars
 
-def spawn_element(elements):
+def spawn_element(elements, assigned_chars):
     if random.random() > 0.9 :
-        elements.append(create_element("ICECUBE",random.randrange(0,1000,10),random.randrange(0,500,10),"ice_cube"))
+        new_element, assigned_chars = create_element("ICECUBE",random.randrange(0,1000,10),random.randrange(0,500,10),"ice_cube", assigned_chars)
+        elements.append(new_element)
     elif random.random() > 0.8 :
-        elements.append(create_element("BOMB",random.randrange(0,1000,10),random.randrange(0,500,10),"bomb"))
-    else: 
-        elements.append(create_element("FRUIT",random.randrange(0,1000,10),random.randrange(0,500,10),random.choice(FRUITS)))
-    return 0.0
+        new_element, assigned_chars = create_element("BOMB",random.randrange(0,1000,10),random.randrange(0,500,10),"bomb", assigned_chars)
+        elements.append(new_element)
+    else:
+        new_element, assigned_chars = create_element("FRUIT",random.randrange(0,1000,10),random.randrange(0,500,10),random.choice(FRUITS), assigned_chars)
+        elements.append(new_element)
+    return 0.0, assigned_chars
 
-def update_elements(elements, delta, combo, frozen = False):
+def update_elements(elements, assigned_chars, delta, combo, frozen = False):
     broken_combo = False
     life_lost = 0
     
@@ -47,17 +53,18 @@ def update_elements(elements, delta, combo, frozen = False):
             element["time_left"] -= delta * SPEED_RATIO
 
         if element["time_left"] <= 0:
-            elements.remove(element)
+            assigned_chars.replace(element["char"], '')
             if not (element["type"] == "BOMB" or element["type"] == "ICECUBE"):
                 life_lost += 1
                 broken_combo = True
+            elements.remove(element)
 
     # Combo broken 
     if broken_combo == True:
         combo = 0
-    return life_lost, combo
+    return life_lost, combo, assigned_chars
 
-def slice_element(elements, key, combo, combo_valid):
+def slice_element(elements, assigned_chars, key, combo, combo_valid):
     icecube_hit = False
     bomb_hit = False
     score = 0
@@ -69,8 +76,10 @@ def slice_element(elements, key, combo, combo_valid):
                     bomb_hit = True
                 elif element["type"] == "ICECUBE":
                     icecube_hit = True
+                assigned_chars.replace(element["char"], '')
                 elements.remove(element)
                 break
+            assigned_chars.replace(element["char"], '')
             elements.remove(element)
 
             if combo_valid:
@@ -79,7 +88,7 @@ def slice_element(elements, key, combo, combo_valid):
                 combo = 0
             score = 1 + combo
         
-    return elements, score, combo, icecube_hit, bomb_hit
+    return score, combo, icecube_hit, bomb_hit, assigned_chars
 
 def combo_add_score(score, combo):
     return score * (1 + combo)

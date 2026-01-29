@@ -54,6 +54,7 @@ def game(window_surface, custom_fonts_tuple, clock):
     #-----------------
 
     elements = []
+    assigned_chars = ""
     spawn_timer = 0.0
     lives = LIFE_MAX
     score = 0
@@ -133,10 +134,10 @@ def game(window_surface, custom_fonts_tuple, clock):
         # Spawn Fruits, bombs and icecubes
         spawn_delay = SPAW_INIT / SPEED_RATIO
         if spawn_timer >= spawn_delay:
-            spawn_timer = spawn_element(elements)
+            spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
         
         # Lives 
-        life_lost, combo = update_elements(elements, delta, combo, frozen)
+        life_lost, combo, assigned_chars = update_elements(elements, assigned_chars,delta, combo, frozen)
         lives -= life_lost
 
         # Events
@@ -146,7 +147,7 @@ def game(window_surface, custom_fonts_tuple, clock):
 
             elif event.type == pygame.KEYDOWN:
                 key = event.unicode.upper()
-                elements, score_add, combo, icecube_hit, bomb_hit = slice_element(elements, key, combo, combo_valid)
+                score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid)
                 score += score_add
                 if icecube_hit:
                     freeze_timer = FREEZE_DURATION
