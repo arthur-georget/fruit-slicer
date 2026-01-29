@@ -1,12 +1,40 @@
 from src.assets_management import load_image
 from pygame import Rect, transform 
 
+#------#
+# SIZES
+#------#
 WIDTH = 1300
 HEIGHT = 731
 BUTTON_WIDTH = 300
 BUTTON_HEIGHT = 70
 center_x = WIDTH // 2
 center_y = HEIGHT // 2
+#-------#
+# COLORS
+#-------#
+WHITE = (255, 255, 255)
+RED = (180, 30, 30)
+GREEN = (0, 255, 78)
+YELLOW = (255, 255, 0, 255)
+PURPLE = (200, 50, 50)
+
+#------------#
+# DIFFICULTY
+#------------#
+
+difficulties = [
+    "EASY",
+    "MEDIUM",
+    "HARD",
+    "G0D LIK3"]
+
+difficulty_color = [
+    GREEN,     # easy
+    YELLOW,   # medium
+    PURPLE,   # hard 
+    RED,   # god_like
+]
 
 def draw_text(text, size, color, center, window_surface,custom_font):
     text_surface = custom_font.render(text, True, color)
@@ -14,7 +42,6 @@ def draw_text(text, size, color, center, window_surface,custom_font):
     window_surface.blit(text_surface, text_rect)
 
 def draw_button_pic(x, y, width, height, image, window):
-    """Draw Button size, position and screen"""
     rect = Rect(x, y, width, height)
     image = transform.scale(image, (width, height))
     window.blit(image, rect)
@@ -53,14 +80,11 @@ top_scores = ["1. 3000", "2. 2750", "3. 2600"]
 
 # Scale
 ## Background
-menu_background = transform.scale(menu_background,(1300, 731))
+
 ## Arrow Difficulty
 arrow_left_png = transform.scale(arrow_left_png, (60, 60))
 arrow_right_png = transform.scale(arrow_right_png, (60, 60))
-## -- Buttons Play / Difficulty / Options / Exit --
-button_background_scale_exit = transform.scale(button_background, (BUTTON_WIDTH / 3, BUTTON_HEIGHT))
-button_background_hover_scale_exit = transform.scale(button_background_hover, (BUTTON_WIDTH / 3, BUTTON_HEIGHT))
-# Arrow rect
+## Arrow rect
 left_arrow_rect = arrow_left_png.get_rect()
 right_arrow_rect = arrow_right_png.get_rect()
 left_arrow_rect.topleft = (center_x - ((BUTTON_WIDTH/2)+ 50), center_y + 208)
