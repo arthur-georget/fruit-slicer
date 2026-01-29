@@ -143,7 +143,7 @@ def game(window_surface, custom_fonts_tuple, clock):
                 is_running = False
 
             # Pause
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     result = game_pause(window_surface, custom_fonts_tuple)
                     
@@ -152,20 +152,19 @@ def game(window_surface, custom_fonts_tuple, clock):
                     elif result == 1:
                         return
 
-            # Game
-            elif event.type == pygame.KEYDOWN and not pause:
-                key = event.unicode.upper()
-                score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid)
-                score_add, combo, icecube_hit, bomb_hit = slice_element(elements, key, combo,combo_valid)
-                score += score_add
-                if icecube_hit:
-                    freeze_timer = FREEZE_DURATION
-                    print("Glacon touché")
-                elif bomb_hit:
-                    lives = life_lost * 3
-                    print("\n BOOOOOOOM !")
-                if score_add > 0:
-                    combo_timer = 1.0
+                # Game
+                else:
+                    key = event.unicode.upper()
+                    score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid)
+                    score += score_add
+                    if icecube_hit:
+                        freeze_timer = FREEZE_DURATION
+                        print("Glacon touché")
+                    elif bomb_hit:
+                        lives = life_lost * 3
+                        print("\n BOOOOOOOM !")
+                    if score_add > 0:
+                        combo_timer = 1.0
 
         # Game Over
         if lives <= 0:
