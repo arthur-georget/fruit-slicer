@@ -25,7 +25,8 @@ def game(window_surface, custom_fonts_tuple, clock):
                 "orange": {"normal": load_image("orange"), "iced": load_image("iced_orange"), "sliced": load_image("sliced_orange")},
                 "pineapple": {"normal": load_image("pineapple"), "iced": load_image("iced_pineapple"), "sliced": load_image("sliced_pineapple")},
                 "bomb": {"normal": load_image("bomb"), "iced": load_image("iced_bomb"), "sliced": load_image("sliced_bomb")},
-                "ice_cube": {"normal": load_image("ice_cube"), "iced": load_image("ice_cube"), "sliced": load_image("sliced_ice_cube")}
+                "ice_cube": {"normal": load_image("ice_cube"), "iced": load_image("ice_cube"), "sliced": load_image("sliced_ice_cube")},
+                "combo": {"1": load_image("combo_1"), "2": load_image("combo_2"), "3": load_image("combo_3")}
             }
 
     is_running = True
@@ -62,11 +63,14 @@ def game(window_surface, custom_fonts_tuple, clock):
         score_shadow_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (55,55,55))
         lives_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (255,255,255))
         lives_shadow_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (55,55,55))
-        window_surface.blit(score_shadow_to_blit,(1152,102))
-        window_surface.blit(score_to_blit,(1150,100))
-        window_surface.blit(lives_shadow_to_blit,(1152,200))
-        window_surface.blit(lives_to_blit,(1150,200))
-        
+        window_surface.blit(score_shadow_to_blit,(1152,202))
+        window_surface.blit(score_to_blit,(1150,200))
+        window_surface.blit(lives_shadow_to_blit,(1152,302))
+        window_surface.blit(lives_to_blit,(1150,300))
+
+        if combo > 0:
+            combo_image = transform.scale(images["combo"][str(combo)], (286, 118))
+            window_surface.blit(combo_image,(1000,50))
 
         ################################## LOGIC ######################################
 
@@ -92,7 +96,7 @@ def game(window_surface, custom_fonts_tuple, clock):
         frozen = freeze_timer > 0
 
         # Spawn Fruits, bombs and icecubes
-        spawn_delay =  SPAWN_INIT / (SPEED_RATIO * random.randrange(1,20,1)/10)
+        spawn_delay =  SPAWN_INIT / (SPEED_RATIO * random.randrange(1,20,1)/20)
         if spawn_timer >= spawn_delay:
             spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
         
