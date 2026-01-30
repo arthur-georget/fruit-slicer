@@ -126,6 +126,18 @@ images = (
             {
                 "name": "sliced_bomb",
                 "path": path.join(IMAGES_PATH, "sliced_bomb.png")
+            },
+            {
+                "name": "combo_1",
+                "path": path.join(IMAGES_PATH, "combo_1.png")
+            },
+            {
+                "name": "combo_2",
+                "path": path.join(IMAGES_PATH, "combo_2.png")
+            },
+            {
+                "name": "combo_3",
+                "path": path.join(IMAGES_PATH, "combo_3.png")
             }
          )
 
@@ -202,6 +214,7 @@ def load_image(image_name):
         - pineapple, sliced_orange, iced_orange
         - bomb, iced_bomb
         - ice_cube, sliced_ice_cube
+        - combo_1, combo_2, combo_3
     - states returned:
         0. image loaded successfully
         1. unknown image name
@@ -233,8 +246,7 @@ def load_image(image_name):
 def blit_display(window_screen, surface, image_loaded, x_pos=0, y_pos=0, disp=False):
 
     '''
-    blit image loaded on provided surface, easy fill or center the image with 
-    center_vertically, center_horizontally or fill bool parameters.
+    blit image loaded on provided display.
     - states:
         0. image successfully blitted
         1. error when trying to blit
@@ -256,19 +268,18 @@ def blit_display(window_screen, surface, image_loaded, x_pos=0, y_pos=0, disp=Fa
                 w, h = display.get_window_size()
                 image_loaded = transform.scale(image_loaded,(w,h))
         except:
-            print(f"blit_image(): error when trying to scale display{image_loaded}")
+            print(f"blit_display(): error when trying to scale display{image_loaded}")
             return 2
         window_screen.blit(image_loaded,(0,0))
         return 0
     except:
-        print(f"blit_image(): error when trying to blit display{image_loaded}")
+        print(f"blit_display(): error when trying to blit display{image_loaded}")
         return 1
 
 def blit_rect(window_screen, surface, image_loaded, x_pos=0, y_pos=0,rect = False):
 
     '''
-    blit image loaded on provided surface, easy fill or center the image with 
-    center_vertically, center_horizontally or fill bool parameters.
+    blit image loaded on provided rect.
     - states:
         0. image successfully blitted
         1. error when trying to blit
@@ -283,9 +294,7 @@ def blit_rect(window_screen, surface, image_loaded, x_pos=0, y_pos=0,rect = Fals
     ### RETURN
         state: int
     '''
-        
-    
-        
+
     if rect:
         image_loaded = transform.scale(image_loaded,(surface.width, surface.height))
 
@@ -295,8 +304,7 @@ def blit_rect(window_screen, surface, image_loaded, x_pos=0, y_pos=0,rect = Fals
 def blit_arrow(window_screen, surface, image_loaded, x_pos=0, y_pos=0, arrow= False):
 
     '''
-    blit image loaded on provided surface, easy fill or center the image with 
-    center_vertically, center_horizontally or fill bool parameters.
+    blit arrow image loaded on provided surface
     - states:
         0. image successfully blitted
         1. error when trying to blit
@@ -324,7 +332,6 @@ def blit_arrow(window_screen, surface, image_loaded, x_pos=0, y_pos=0, arrow= Fa
     except:
         print(f"blit_image(): error when trying to blit {image_loaded}")
         return 1
-
 
 def play_sound(sound_name, looping=False):
 
