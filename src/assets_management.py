@@ -1,5 +1,6 @@
 from os import path,pardir
 from pygame import image,mixer,transform,display
+import random
 
 BASE_DIR = path.dirname(path.abspath(__file__))
 FONT_PATH = path.join(BASE_DIR, pardir, "assets", "fonts", "LiberationSans-Regular.ttf")
@@ -144,53 +145,65 @@ images = (
 sounds = (
             {
                 "name": "menu_music",
-                "path": path.join(SOUNDS_PATH, "menu_music.wav")
+                "path": path.join(SOUNDS_PATH, "menu_music.mp3")
             },
             {
                 "name": "game_music",
-                "path": path.join(SOUNDS_PATH, "game_music.wav")
+                "path": path.join(SOUNDS_PATH, "game_music.mp3")
             },
             {
                 "name": "button_clicked",
-                "path": path.join(SOUNDS_PATH, "button_clicked.wav")
+                "path": path.join(SOUNDS_PATH, "button_clicked.mp3")
             },
             {
                 "name": "validation",
-                "path": path.join(SOUNDS_PATH, "validation.wav")
+                "path": path.join(SOUNDS_PATH, "validation.mp3")
             },
             {
                 "name": "cancelation",
-                "path": path.join(SOUNDS_PATH, "cancelation.wav")
+                "path": path.join(SOUNDS_PATH, "cancelation.mp3")
             },
             {
                 "name": "element_throwed",
-                "path": path.join(SOUNDS_PATH, "element_throwed.wav")
+                "path": path.join(SOUNDS_PATH, "element_throwed.mp3")
             },
             {
-                "name": "fruit_sliced",
-                "path": path.join(SOUNDS_PATH, "fruit_sliced.wav")
+                "name": "fruit_sliced_1",
+                "path": path.join(SOUNDS_PATH, "fruit_sliced_1.mp3")
+            },
+            {
+                "name": "fruit_sliced_2",
+                "path": path.join(SOUNDS_PATH, "fruit_sliced_2.mp3")
+            },
+            {
+                "name": "fruit_sliced_3",
+                "path": path.join(SOUNDS_PATH, "fruit_sliced_3.mp3")
             },
             {
                 "name": "ice_sliced",
-                "path": path.join(SOUNDS_PATH, "ice_sliced.wav")
+                "path": path.join(SOUNDS_PATH, "ice_sliced.mp3")
             },
             {
                 "name": "bomb_sliced",
-                "path": path.join(SOUNDS_PATH, "bomb_sliced.wav")
+                "path": path.join(SOUNDS_PATH, "bomb_sliced.mp3")
             },
             {
                 "name": "fruit_missed",
-                "path": path.join(SOUNDS_PATH, "fruit_missed.wav")
+                "path": path.join(SOUNDS_PATH, "fruit_missed.mp3")
             },
             {
                 "name": "game_won",
-                "path": path.join(SOUNDS_PATH, "game_won.wav")
+                "path": path.join(SOUNDS_PATH, "game_won.mp3")
             },
             {
                 "name": "game_over",
-                "path": path.join(SOUNDS_PATH, "game_over.wav")
+                "path": path.join(SOUNDS_PATH, "game_over.mp3")
+            },
+            {
+                "name": "combo_sliced",
+                "path": path.join(SOUNDS_PATH, "combo_sliced.mp3")
             }
-         )
+        )
 
 def load_image(image_name):
 
@@ -362,6 +375,9 @@ def play_sound(sound_name, looping=False):
     '''
 
     try:
+        if sound_name == "fruit_sliced":
+            sound_name = f"fruit_sliced_{random.randint(1,3)}"
+
         for sound in sounds:
             if sound["name"] == sound_name:
                 try:

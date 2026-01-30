@@ -2,7 +2,11 @@ import pygame
 from src.game_function import *
 from src.assets_management import *
 
+
+
 def game(window_surface, custom_fonts_tuple, clock):
+
+    
 
     elements = []
     assigned_chars = ""
