@@ -1,5 +1,5 @@
 from os import path,pardir
-from pygame import image,mixer,transform,display
+from pygame import image,mixer,transform,display,draw,Rect 
 
 BASE_DIR = path.dirname(path.abspath(__file__))
 FONT_PATH = path.join(BASE_DIR, pardir, "assets", "fonts", "LiberationSans-Regular.ttf")
@@ -319,7 +319,7 @@ def blit_arrow(window_screen, surface, image_loaded, x_pos=0, y_pos=0, arrow= Fa
         except:
             print(f"blit_image(): error when trying to scale {image_loaded}")
             return 2
-        #window_screen.blit(image_loaded,surface)
+        window_screen.blit(image_loaded,surface)
         return 0
     except:
         print(f"blit_image(): error when trying to blit {image_loaded}")
@@ -372,3 +372,28 @@ def play_sound(sound_name, looping=False):
     except:
         print("play_sound(): unhandled error in play_sound()")
         return 3
+    
+def draw_slider(surface, rect, value):
+    # Fond
+    draw.rect(surface, (80, 80, 80), rect, border_radius=10)
+
+    # Remplissage selon la valeur
+    fill_rect = Rect(rect.x, rect.y, rect.width * value, rect.height)
+    draw.rect(surface, (200, 200, 200), fill_rect, border_radius=10)
+
+    # Handle (petit cercle)
+    handle_x = rect.x + rect.width * value
+    draw.circle(surface, (255, 255, 255), (int(handle_x), rect.centery), rect.height // 2)
+
+
+def draw_fruity_slider(surface, rect, value):
+    # Fond (peau du fruit)
+    draw.rect(surface, (255, 180, 80), rect, border_radius=12)
+
+    # Pulpe (remplissage)
+    fill_rect = Rect(rect.x, rect.y, rect.width * value, rect.height)
+    draw.rect(surface, (255, 140, 0), fill_rect, border_radius=12)
+
+    # Pépin (handle)
+    handle_x = rect.x + rect.width * value
+    draw.circle(surface, (255, 255, 255), (int(handle_x), rect.centery), rect.height // 2)

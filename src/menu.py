@@ -3,6 +3,7 @@ from src.button import *
 from pathlib import Path
 from src.assets_management import blit_rect, blit_display, blit_arrow
 from src.game import game
+from src.options import options_menu
 #-------#
 # MUSIC
 #-------#
@@ -61,7 +62,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
                     game(window_surface, custom_fonts_tuple, clock)
                 # Options Button
                 elif options_button.collidepoint(event.pos):
-                    pass
+                    options_menu(window_surface, custom_fonts_tuple, clock)
                 elif difficulty_button.collidepoint(event.pos):
                     pass
                     

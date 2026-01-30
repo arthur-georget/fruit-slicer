@@ -1,6 +1,8 @@
 import pygame
 from src.assets_management import *
 from src.menu import menu
+from src.settings import load_settings
+settings = load_settings()
 
 
 
