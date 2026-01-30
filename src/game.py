@@ -92,7 +92,7 @@ def game(window_surface, custom_fonts_tuple, clock):
         frozen = freeze_timer > 0
 
         # Spawn Fruits, bombs and icecubes
-        spawn_delay = SPAWN_INIT / SPEED_RATIO
+        spawn_delay =  SPAWN_INIT / (SPEED_RATIO * random.randrange(1,20,1)/10)
         if spawn_timer >= spawn_delay:
             spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
         
