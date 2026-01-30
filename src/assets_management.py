@@ -389,9 +389,7 @@ def play_sound(sound_name, looping=False):
                     sound_loaded.play()
                 else:
                     sound_loaded.play(-1)
-                return 0
-            else:
-                print(f"play_sound(): unknown sound name {sound_name}")           
+                return 0         
     except:
         print("play_sound(): unhandled error in play_sound()")
         return 3

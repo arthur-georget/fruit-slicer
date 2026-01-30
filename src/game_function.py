@@ -193,12 +193,12 @@ def game_over_popup(window_surface, custom_fonts_tuple):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_again_button.collidepoint(event.pos):
-                    play_sound("button_clickeded")
+                    play_sound("button_clicked")
                     return True
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if menu_button.collidepoint(event.pos):
-                    play_sound("button_clickeded")
+                    play_sound("button_clicked")
                     return False
 
         pygame.display.update()
