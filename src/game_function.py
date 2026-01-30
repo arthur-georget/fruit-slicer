@@ -104,8 +104,6 @@ def combo_add_score(score, combo):
 
 def game_pause(window_surface, custom_fonts_tuple):
     
-
-
     overlay = pygame.Surface(window_surface.get_size(), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 200))
     window_surface.blit(overlay, (0, 0))
@@ -113,12 +111,8 @@ def game_pause(window_surface, custom_fonts_tuple):
     while True:
         mouse_pos = pygame.mouse.get_pos()
 
-        
-
-
         # Text
         draw_text("PAUSE", 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
-
 
         # - Buttons -
 
@@ -134,9 +128,7 @@ def game_pause(window_surface, custom_fonts_tuple):
         blit_rect(window_surface, menu_button, option_img, rect=True)
         draw_text("MENU", 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
 
-
         for event in pygame.event.get():
-
 
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -150,6 +142,46 @@ def game_pause(window_surface, custom_fonts_tuple):
                 if menu_button.collidepoint(event.pos):
                     return 1
 
-
         pygame.display.update()
 
+def game_over_popup(window_surface, custom_fonts_tuple):
+    
+    overlay = pygame.Surface(window_surface.get_size(), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 200))
+    window_surface.blit(overlay, (0, 0))
+
+    while True:
+        mouse_pos = pygame.mouse.get_pos()
+
+        # Text
+        draw_text("GAME OVER", 80, RED, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
+
+        # - Buttons -
+
+        # Resume
+        play_again_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y - 20,    BUTTON_WIDTH, BUTTON_HEIGHT)
+        resum_img = (PAUSE_BUTTON_HOVER if play_again_button.collidepoint(mouse_pos) else   PAUSE_BUTTON)
+        blit_rect(window_surface, play_again_button, resum_img, rect=True)
+        draw_text("REJOUER", 36, WHITE, play_again_button.center, window_surface, custom_fonts_tuple[0])
+
+        # menu
+        menu_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y + 60,  BUTTON_WIDTH, BUTTON_HEIGHT)
+        option_img = (PAUSE_BUTTON_HOVER if menu_button.collidepoint(mouse_pos) else    PAUSE_BUTTON)
+        blit_rect(window_surface, menu_button, option_img, rect=True)
+        draw_text("MENU", 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return False
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if play_again_button.collidepoint(event.pos):
+                    return True
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if menu_button.collidepoint(event.pos):
+                    return False
+
+        pygame.display.update()

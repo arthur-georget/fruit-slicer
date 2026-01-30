@@ -132,7 +132,21 @@ def game(window_surface, custom_fonts_tuple, clock):
         # Game Over
         if lives <= 0:
             print("\n Game Over !")
-            is_running = False
+            play_again = game_over_popup(window_surface, custom_fonts_tuple)
+            if play_again:
+                elements = []
+                assigned_chars = ""
+                spawn_timer = 0.0
+                lives = LIFE_MAX
+                score = 0
+                combo = 0
+                frozen = False
+                freeze_timer = 0.0
+                combo_timer = 0.0
+                game_timer = 0.0
+                timmer_running = True
+            else:
+                is_running = False
 
         pygame.display.update()
 pygame.quit()
