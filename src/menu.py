@@ -2,9 +2,8 @@ import pygame
 from src.button import *
 from pathlib import Path
 from src.assets_management import blit_rect, blit_display, blit_arrow, play_sound
+from src.data_management import *
 from src.game import game
-
-
 
 # Menu
 def menu(window_surface,custom_fonts_tuple,clock):
@@ -16,7 +15,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
     #----------#
     # Variables
     #----------#
-    difficulty_index = 0
+    difficulty_index = get_json_data(CONFIG_PATH)["difficulty"]
     
     while True:
         blit_display(window_surface, window_surface, menu_background, disp= True)
@@ -55,6 +54,8 @@ def menu(window_surface,custom_fonts_tuple,clock):
             if event.type == pygame.QUIT:
                 return None
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                set_json_data(CONFIG_PATH,"difficulty",difficulty_index)
 
                 # Play Button
                 if play_button.collidepoint(event.pos):
