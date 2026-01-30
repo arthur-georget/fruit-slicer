@@ -39,7 +39,6 @@ def game(window_surface, custom_fonts_tuple, clock):
         # Blit elements in screen
         for element in elements:
             char_to_blit = custom_fonts_tuple[0].render(element["char"], True, (255,255,255))
-            time_left_to_blit = custom_fonts_tuple[0].render(str(int(element["time_left"])), True, (255,255,255))
             if frozen:
                 element_image = transform.scale(images[element["image_name"]]["iced"], (100, 100))
                 element_rect = element_image.get_rect()
@@ -55,7 +54,6 @@ def game(window_surface, custom_fonts_tuple, clock):
 
             window_surface.blit(element_image,element_rect)
             window_surface.blit(char_to_blit,(element["x_pos"]+40,element["y_pos"]))
-            window_surface.blit(time_left_to_blit,(element["x_pos"]+40,element["y_pos"]+40))
         
         score_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (255,255,255))
         lives_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (255,255,255))
@@ -91,7 +89,7 @@ def game(window_surface, custom_fonts_tuple, clock):
             spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
         
         # Lives 
-        life_lost, combo, assigned_chars = update_elements(elements, assigned_chars,delta, combo, frozen)
+        life_lost, combo, assigned_chars = update_elements(elements, assigned_chars, combo)
         lives -= life_lost
 
         # Events

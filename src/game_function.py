@@ -57,21 +57,15 @@ def spawn_element(elements, assigned_chars):
         elements.append(new_element)
     return 0.0, assigned_chars
 
-def update_elements(elements, assigned_chars, delta, combo, frozen = False):
+def update_elements(elements, assigned_chars, combo):
     broken_combo = False
     life_lost = 0
-    
     for element in elements[:]:
-        if frozen == True:
-            pass
-        else:    
-            element["time_left"] -= delta * SPEED_RATIO
-
-        if element["time_left"] <= 0:
-            assigned_chars = assigned_chars.replace(element["char"], '')
+        if element["y_pos"] > 731:
             if not (element["type"] == "BOMB" or element["type"] == "ICECUBE"):
                 life_lost += 1
                 broken_combo = True
+            assigned_chars = assigned_chars.replace(element["char"], '')
             elements.remove(element)
 
     # Combo broken 
