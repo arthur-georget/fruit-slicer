@@ -106,7 +106,7 @@ def slice_element(elements, assigned_chars, key, combo, combo_valid):
             score = 1 + combo
     if not hit:
         play_sound("fruit_missed")
-        combo = 0
+        
         
     return score, combo, icecube_hit, bomb_hit, assigned_chars
 

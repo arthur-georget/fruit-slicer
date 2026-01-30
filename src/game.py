@@ -6,8 +6,6 @@ from src.assets_management import *
 
 def game(window_surface, custom_fonts_tuple, clock):
 
-    
-
     elements = []
     assigned_chars = ""
     spawn_timer = 0.0
@@ -62,7 +60,6 @@ def game(window_surface, custom_fonts_tuple, clock):
             window_surface.blit(char_shadow_to_blit,(element["x_pos"]+52,element["y_pos"]+2))
             window_surface.blit(char_to_blit,(element["x_pos"]+50,element["y_pos"]))
             
-        
         score_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (255,255,255))
         score_shadow_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (55,55,55))
         lives_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (255,255,255))
@@ -128,18 +125,16 @@ def game(window_surface, custom_fonts_tuple, clock):
                     key = event.unicode.upper()
                     score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid)
                     score += score_add
+
                     if icecube_hit:
                         freeze_timer = FREEZE_DURATION
-                        print("Glacon touché")
                     elif bomb_hit:
                         lives = life_lost * 3
-                        print("\n BOOOOOOOM !")
                     if score_add > 0:
                         combo_timer = 1.0
 
         # Game Over
         if lives <= 0:
-            print("\n Game Over !")
             play_again = game_over_popup(window_surface, custom_fonts_tuple)
             if play_again:
                 elements = []
