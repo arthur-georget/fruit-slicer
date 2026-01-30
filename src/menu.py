@@ -1,9 +1,10 @@
-import pygame
-from src.button import *
-from pathlib import Path
+from pygame import mouse, event, display, QUIT, MOUSEBUTTONDOWN, SYSTEM_CURSOR_HAND
+from src.button_functions import draw_text, draw_button_pic
 from src.assets_management import blit_rect, blit_display, blit_arrow
 from src.game import game
 from src.options import options_menu
+from src.constants import WHITE, difficulties, difficulty_color, arrow_left_png, arrow_right_png, left_arrow_rect, right_arrow_rect, menu_background, button_background, button_background_hover, score_background
+from src.menu_button import *
 #-------#
 # MUSIC
 #-------#
@@ -21,7 +22,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
     
     while True:
         blit_display(window_surface, window_surface, menu_background, disp= True)
-        mouse_pos = pygame.mouse.get_pos()
+        mouse_pos = mouse.get_pos()
         ##Score
         # Button Play
         play_image = (button_background_hover if play_button.collidepoint(mouse_pos)else button_background)
@@ -52,36 +53,36 @@ def menu(window_surface,custom_fonts_tuple,clock):
         for score_text, center in zip(top_scores, top_scores_centers):
             draw_text(score_text, 32, (255, 255, 255), center, window_surface, custom_fonts_tuple[0])
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        for events in event.get():
+            if events.type == QUIT:
                 return None
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if events.type == MOUSEBUTTONDOWN:
 
                 # Play Button
-                if play_button.collidepoint(event.pos):
+                if play_button.collidepoint(events.pos):
                     game(window_surface, custom_fonts_tuple, clock)
                 # Options Button
-                elif options_button.collidepoint(event.pos):
+                elif options_button.collidepoint(events.pos):
                     options_menu(window_surface, custom_fonts_tuple, clock)
-                elif difficulty_button.collidepoint(event.pos):
+                elif difficulty_button.collidepoint(events.pos):
                     pass
                     
                 # Left Arrow
-                elif left_arrow_rect.collidepoint(event.pos):
+                elif left_arrow_rect.collidepoint(events.pos):
                     difficulty_index -= 1
                     if difficulty_index < 0:
                         difficulty_index = len(difficulties) - 1
 
                 # Right Arrow
-                elif right_arrow_rect.collidepoint(event.pos):
+                elif right_arrow_rect.collidepoint(events.pos):
                     difficulty_index += 1
                     if difficulty_index >= len(difficulties):
                         difficulty_index = 0
                         
 
                 # Exit
-                elif exit_button.collidepoint(event.pos):
-                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                elif exit_button.collidepoint(events.pos):
+                    mouse.set_cursor(SYSTEM_CURSOR_HAND)
                     return None
         clock.tick(60)
-        pygame.display.update()
+        display.update()

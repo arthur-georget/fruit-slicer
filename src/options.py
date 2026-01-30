@@ -1,8 +1,11 @@
-from pygame import Rect, mouse, display, MOUSEBUTTONDOWN, QUIT, event
-from src.button import *
+from pygame import mouse, display, MOUSEBUTTONDOWN, QUIT, event
+from src.button_functions import *
+from src.constants import WHITE, menu_background, button_background, button_background_hover, arrow_left_png, arrow_right_png
 from src.assets_management import blit_rect, blit_display, draw_fruity_slider
 from src.settings import save_settings, load_settings
 from src.translation import load_translation
+from src.constants import left_arrow_rect, right_arrow_rect, difficulties
+from src.options_button import *
 
 def options_menu(window_surface, custom_fonts_tuple, clock):
     settings = load_settings()
@@ -11,22 +14,7 @@ def options_menu(window_surface, custom_fonts_tuple, clock):
     languages = ["FR", "EN", "ES"]
     language_index = languages.index(settings["language"])
 
-    # Rects
-    back_button = Rect(50, 50, 200, 80)
-
-    language_button = Rect(400, 250, 300, 80)
-    left_arrow_lang = Rect(330, 250, 50, 80)
-    right_arrow_lang = Rect(720, 250, 50, 80)
-
-    # Music ON/OFF
-    music_toggle_button = Rect(400, 340, 300, 60)
-
-    # SFX ON/OFF
-    sfx_toggle_button = Rect(400, 410, 300, 60)
-
-    # Sliders fruités
-    music_slider = Rect(400, 500, 300, 20)
-    sfx_slider = Rect(400, 560, 300, 20)
+    
 
     while True:
         blit_display(window_surface, window_surface, menu_background, disp=True)
@@ -85,13 +73,13 @@ def options_menu(window_surface, custom_fonts_tuple, clock):
 
                 # Change language
                 # Left Arrow
-                elif left_arrow_rect.collidepoint(event.pos):
+                elif left_arrow_rect.collidepoint(events.pos):
                     language_index -= 1
                     if language_index < 0:
                         language_index = len(difficulties) - 1
 
                 # Right Arrow
-                elif right_arrow_rect.collidepoint(event.pos):
+                elif right_arrow_rect.collidepoint(events.pos):
                     language_index += 1
                     if language_index >= len(difficulties):
                         language_index = 0
