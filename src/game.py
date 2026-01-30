@@ -1,8 +1,7 @@
 import pygame
 from src.game_function import *
 from src.assets_management import *
-
-
+from src.data_management import *
 
 def game(window_surface, custom_fonts_tuple, clock):
 
@@ -17,6 +16,7 @@ def game(window_surface, custom_fonts_tuple, clock):
     combo_timer = 0.0
     game_timer = 0.0
     timmer_running = True
+    difficulty = get_json_data(CONFIG_PATH)["difficulty"]
 
     game_background_image = load_image("game_background")
 
@@ -97,7 +97,7 @@ def game(window_surface, custom_fonts_tuple, clock):
         frozen = freeze_timer > 0
 
         # Spawn Fruits, bombs and icecubes
-        spawn_delay =  SPAWN_INIT / (SPEED_RATIO * random.randrange(1,20,1)/20)
+        spawn_delay =  SPAWN_INIT / (SPEED_RATIO * random.randrange(1,20,1)/20 * (difficulty+1))
         if spawn_timer >= spawn_delay:
             spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
         
