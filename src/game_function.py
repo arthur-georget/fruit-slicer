@@ -8,7 +8,6 @@ from src.button import *
 KEYBOARD = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$")
 FRUITS = ("apple","banana","kiwi","orange","pineapple")
 LIFE_MAX = 3
-SCORE_ADD = 1
 
 # Time
 FPS = 60
@@ -48,13 +47,13 @@ def create_element(element_type,x_pos,y_pos,image_name,assigned_chars):
 
 def spawn_element(elements, assigned_chars):
     if random.random() > 0.9 :
-        new_element, assigned_chars = create_element("ICECUBE",random.randrange(0,1000,10),-100,"ice_cube", assigned_chars)
+        new_element, assigned_chars = create_element("ICECUBE",random.randrange(200,1100,10),-100,"ice_cube", assigned_chars)
         elements.append(new_element)
     elif random.random() > 0.8 :
-        new_element, assigned_chars = create_element("BOMB",random.randrange(0,1000,10),-100,"bomb", assigned_chars)
+        new_element, assigned_chars = create_element("BOMB",random.randrange(200,1200,10),-100,"bomb", assigned_chars)
         elements.append(new_element)
     else:
-        new_element, assigned_chars = create_element("FRUIT",random.randrange(0,1000,10),-100,random.choice(FRUITS), assigned_chars)
+        new_element, assigned_chars = create_element("FRUIT",random.randrange(200,1200,10),-100,random.choice(FRUITS), assigned_chars)
         elements.append(new_element)
     return 0.0, assigned_chars
 
