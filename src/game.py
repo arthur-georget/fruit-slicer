@@ -39,6 +39,7 @@ def game(window_surface, custom_fonts_tuple, clock):
         # Blit elements in screen
         for element in elements:
             char_to_blit = custom_fonts_tuple[0].render(element["char"], True, (255,255,255))
+            char_shadow_to_blit = custom_fonts_tuple[0].render(element["char"], True, (55,55,55))
             if frozen:
                 element_image = transform.scale(images[element["image_name"]]["iced"], (100, 100))
                 element_rect = element_image.get_rect()
@@ -53,12 +54,19 @@ def game(window_surface, custom_fonts_tuple, clock):
                 element["y_pos"] += element["velocity"].y
 
             window_surface.blit(element_image,element_rect)
-            window_surface.blit(char_to_blit,(element["x_pos"]+40,element["y_pos"]))
+            window_surface.blit(char_shadow_to_blit,(element["x_pos"]+52,element["y_pos"]+2))
+            window_surface.blit(char_to_blit,(element["x_pos"]+50,element["y_pos"]))
+            
         
         score_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (255,255,255))
+        score_shadow_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (55,55,55))
         lives_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (255,255,255))
-        window_surface.blit(score_to_blit,(0,100))
-        window_surface.blit(lives_to_blit,(0,200))
+        lives_shadow_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (55,55,55))
+        window_surface.blit(score_shadow_to_blit,(1152,102))
+        window_surface.blit(score_to_blit,(1150,100))
+        window_surface.blit(lives_shadow_to_blit,(1152,200))
+        window_surface.blit(lives_to_blit,(1150,200))
+        
 
         ################################## LOGIC ######################################
 
