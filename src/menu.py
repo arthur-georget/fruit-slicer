@@ -1,18 +1,18 @@
 import pygame
 from src.button import *
 from pathlib import Path
-from src.assets_management import blit_rect, blit_display, blit_arrow
+from src.assets_management import blit_rect, blit_display, blit_arrow, play_sound
 from src.game import game
-#-------#
-# MUSIC
-#-------#
-#pygame.mixer.music.load()
-#pygame.mixer.music.set_volume(0.5)
-#pygame.mixer.music.play(-1)
+
+
 
 # Menu
 def menu(window_surface,custom_fonts_tuple,clock):
 
+    # Music
+    play_sound("game_music", looping=True)
+
+    
     #----------#
     # Variables
     #----------#
@@ -58,21 +58,26 @@ def menu(window_surface,custom_fonts_tuple,clock):
 
                 # Play Button
                 if play_button.collidepoint(event.pos):
+                    play_sound("button_clicked")
                     game(window_surface, custom_fonts_tuple, clock)
                 # Options Button
                 elif options_button.collidepoint(event.pos):
+                    play_sound("button_clicked")
                     pass
                 elif difficulty_button.collidepoint(event.pos):
+                    play_sound("button_clicked")
                     pass
                     
                 # Left Arrow
                 elif left_arrow_rect.collidepoint(event.pos):
+                    play_sound("button_clicked")
                     difficulty_index -= 1
                     if difficulty_index < 0:
                         difficulty_index = len(difficulties) - 1
 
                 # Right Arrow
                 elif right_arrow_rect.collidepoint(event.pos):
+                    play_sound("button_clicked")
                     difficulty_index += 1
                     if difficulty_index >= len(difficulties):
                         difficulty_index = 0
@@ -80,6 +85,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
 
                 # Exit
                 elif exit_button.collidepoint(event.pos):
+                    play_sound("button_clicked")
                     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                     return None
         clock.tick(60)
