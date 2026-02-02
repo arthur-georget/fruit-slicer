@@ -1,5 +1,10 @@
 {
     "options": "OPTIONS",
     "language": "LANGUE",
-    "back": "RETOUR"
+    "back": "RETOUR",
+    "music": "MUSIQUE",
+    "effects": "EFFETS",
+    "volume music": "VOLUME MUSIQUE",
+    "volume effects": "VOLUME EFFETS",
+    "difficulties": ["EASY", "MEDIUM","HARD", "GOD LIKE"]
 }

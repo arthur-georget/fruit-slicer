@@ -3,7 +3,7 @@ from src.button_functions import draw_text, draw_button_pic
 from src.assets_management import blit_rect, blit_display, blit_arrow
 from src.game import game
 from src.options import options_menu
-from src.constants import WHITE, difficulties, difficulty_color, arrow_left_png, arrow_right_png, left_arrow_rect, right_arrow_rect, menu_background, button_background, button_background_hover, score_background
+from src.constants import WHITE, arrow_left_png, arrow_right_png, menu_background, button_background, button_background_hover, score_background
 from src.menu_button import *
 #-------#
 # MUSIC

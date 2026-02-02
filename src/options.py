@@ -1,10 +1,9 @@
 from pygame import mouse, display, MOUSEBUTTONDOWN, QUIT, event
 from src.button_functions import *
-from src.constants import WHITE, menu_background, button_background, button_background_hover, arrow_left_png, arrow_right_png
+from src.constants import WHITE, options_background, button_background, button_background_hover, arrow_left_png, arrow_right_png, BLACK
 from src.assets_management import blit_rect, blit_display, draw_fruity_slider
 from src.settings import save_settings, load_settings
 from src.translation import load_translation
-from src.constants import left_arrow_rect, right_arrow_rect, difficulties
 from src.options_button import *
 
 def options_menu(window_surface, custom_fonts_tuple, clock):
@@ -14,44 +13,44 @@ def options_menu(window_surface, custom_fonts_tuple, clock):
     languages = ["FR", "EN", "ES"]
     language_index = languages.index(settings["language"])
 
-    
+    blit_rect(window_surface, language_button, button_background, rect= True)
 
     while True:
-        blit_display(window_surface, window_surface, menu_background, disp=True)
+        blit_display(window_surface, window_surface, options_background, disp=True)
         mouse_pos = mouse.get_pos()
-
+        index = 0
         # Title
-        draw_text(T["options"], 48, WHITE,
-                  (window_surface.get_width()//2, 150),
-                  window_surface, custom_fonts_tuple[0])
+        blit_rect(window_surface, options_button, button_background, rect= True)
+        draw_text(T["options"], 48, BLACK,((window_surface.get_width()//2)-2, 148),window_surface, custom_fonts_tuple[0])
+        draw_text(T["options"], 48, WHITE,(window_surface.get_width()//2, 150),window_surface, custom_fonts_tuple[0])
 
         # Language selector
-        blit_rect(window_surface, language_button, button_background_hover, rect=True)
-        draw_text(f"{T['language']} : {languages[language_index]}", 36, WHITE,
-                  language_button.center, window_surface, custom_fonts_tuple[0])
+        blit_rect(window_surface, language_button, button_background, rect=True)
+        draw_text(f"{T['language']} : {languages[language_index]}", 36, BLACK,(center_x -2 ,288), window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T['language']} : {languages[language_index]}", 36, WHITE,language_button.center, window_surface, custom_fonts_tuple[0])
 
         window_surface.blit(arrow_left_png, left_arrow_lang)
         window_surface.blit(arrow_right_png, right_arrow_lang)
 
         # Music toggle
-        blit_rect(window_surface, music_toggle_button, button_background_hover, rect=True)
+        blit_rect(window_surface, music_toggle_button, button_background, rect=True)
         music_state = "ON" if settings["music_enabled"] else "OFF"
-        draw_text(f"Musique : {music_state}", 32, WHITE,
-                  music_toggle_button.center, window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["music"]} : {music_state}", 32, BLACK,(center_x-2,368), window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["music"]} : {music_state}", 32, WHITE,music_toggle_button.center, window_surface, custom_fonts_tuple[0])
 
         # SFX toggle
-        blit_rect(window_surface, sfx_toggle_button, button_background_hover, rect=True)
+        blit_rect(window_surface, sfx_toggle_button, button_background, rect=True)
         sfx_state = "ON" if settings["sfx_enabled"] else "OFF"
-        draw_text(f"Sons : {sfx_state}", 32, WHITE,
-                  sfx_toggle_button.center, window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["effects"]} : {sfx_state}", 32, BLACK,(center_x-2,438), window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["effects"]} : {sfx_state}", 32, WHITE,sfx_toggle_button.center, window_surface, custom_fonts_tuple[0])
 
         # Sliders fruités
-        draw_text("Volume Musique", 28, WHITE, (300, 510),
-                  window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["volume music"]}", 28, BLACK, (648, 508),window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["volume music"]}", 28, WHITE, (650, 510),window_surface, custom_fonts_tuple[0])
         draw_fruity_slider(window_surface, music_slider, settings["music_volume"])
 
-        draw_text("Volume Effets", 28, WHITE, (300, 570),
-                  window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["volume effects"]}", 28, BLACK, (648, 628),window_surface, custom_fonts_tuple[0])
+        draw_text(f"{T["volume effects"]}", 28, WHITE, (650, 630),window_surface, custom_fonts_tuple[0])
         draw_fruity_slider(window_surface, sfx_slider, settings["sfx_volume"])
 
         # Back button
@@ -73,16 +72,26 @@ def options_menu(window_surface, custom_fonts_tuple, clock):
 
                 # Change language
                 # Left Arrow
-                elif left_arrow_rect.collidepoint(events.pos):
+                elif left_arrow_lang.collidepoint(events.pos):
                     language_index -= 1
                     if language_index < 0:
-                        language_index = len(difficulties) - 1
+                        language_index = len(languages) - 1
+
+                    settings["language"] = languages[language_index]
+                    save_settings(settings)
+                    T = load_translation()
+
 
                 # Right Arrow
-                elif right_arrow_rect.collidepoint(events.pos):
+                elif right_arrow_lang.collidepoint(events.pos):
                     language_index += 1
-                    if language_index >= len(difficulties):
+                    if language_index >= len(languages):
                         language_index = 0
+
+                    settings["language"] = languages[language_index]
+                    save_settings(settings)
+                    T = load_translation()
+
                 
 
                 # Toggle music

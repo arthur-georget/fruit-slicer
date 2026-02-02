@@ -1,5 +1,9 @@
 {
     "options": "OPTIONS",
     "language": "LANGUAGE",
-    "back": "BACK"
+    "back": "BACK",
+    "music": "MUSIC",
+    "effects": "EFFECTS",
+    "volume music": "VOLUME MUSIC",
+    "volume effects": "VOLUME EFFECTS"
 }
