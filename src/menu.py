@@ -23,7 +23,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
     #----------#
     # Variables
     #----------#
-    difficulty_index = get_json_data(CONFIG_PATH)["difficulty"]
+    difficulty_index = get_json_data(SETTINGS_PATH)["difficulty"]
     
     while True:
         blit_display(window_surface, window_surface, menu_background, disp= True)
@@ -63,7 +63,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
                 return None
             if events.type == MOUSEBUTTONDOWN:
 
-                set_json_data(CONFIG_PATH,"difficulty",difficulty_index)
+                set_json_data(SETTINGS_PATH,"difficulty",difficulty_index)
 
                 # Play Button
                 if play_button.collidepoint(events.pos):

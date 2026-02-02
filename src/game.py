@@ -16,7 +16,7 @@ def game(window_surface, custom_fonts_tuple, clock):
     combo_timer = 0.0
     game_timer = 0.0
     timmer_running = True
-    difficulty = get_json_data(CONFIG_PATH)["difficulty"]
+    difficulty = get_json_data(SETTINGS_PATH)["difficulty"]
 
     game_background_image = load_image("game_background")
 

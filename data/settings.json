@@ -1,7 +1,8 @@
 {
-    "language": "FR",
-    "music_volume": 0.32195121951219513,
-    "sfx_volume": 0.8536585365853658,
-    "music_enabled": false,
-    "sfx_enabled": false
+  "language": "FR",
+  "music_volume": 0.32195121951219513,
+  "sfx_volume": 0.8536585365853658,
+  "music_enabled": false,
+  "sfx_enabled": false,
+  "difficulty": 0
 }

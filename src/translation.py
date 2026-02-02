@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from src.settings import load_settings
+from src.data_management import load_settings
 
 def load_translation():
     settings = load_settings()

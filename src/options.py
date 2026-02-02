@@ -2,7 +2,7 @@ from pygame import mouse, display, MOUSEBUTTONDOWN, QUIT, event
 from src.button_functions import *
 from src.constants import WHITE, options_background, button_background, button_background_hover, arrow_left_png, arrow_right_png, BLACK
 from src.assets_management import blit_rect, blit_display, draw_fruity_slider
-from src.settings import save_settings, load_settings
+from src.data_management import save_settings, load_settings
 from src.translation import load_translation
 from src.options_button import *
 

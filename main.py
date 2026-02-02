@@ -1,16 +1,6 @@
 import pygame
 from src.assets_management import *
 from src.menu import menu
-from src.settings import load_settings
-settings = load_settings()
-
-
-
-
-# Variables
-
-
-# Main program
 
 if __name__ == "__main__":
 
@@ -19,8 +9,6 @@ if __name__ == "__main__":
 
     pygame.display.set_caption('Fruits Slicer')
     window_surface = pygame.display.set_mode((1300, 731))
-
-    background = pygame.Surface((1300, 731))
 
     clock = pygame.time.Clock()
 
