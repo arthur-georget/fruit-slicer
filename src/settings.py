@@ -1,7 +1,9 @@
+from os import path,pardir
 import json
 from pathlib import Path
 
-SETTINGS_FILE = Path("settings.json")
+BASE_DIR = path.dirname(path.abspath(__file__))
+SETTINGS_FILE = path.join(BASE_DIR, pardir, "data", "settings.json")
 
 default_settings = {
     "language": "FR",
@@ -11,9 +13,8 @@ default_settings = {
     "sfx_enabled": True
 }
 
-
 def load_settings():
-    if SETTINGS_FILE.exists():
+    if SETTINGS_FILE != "":
         with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return default_settings.copy()
