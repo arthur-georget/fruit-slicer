@@ -2,7 +2,7 @@ import random
 import pygame
 from src.assets_management import *
 from src.button_functions import draw_text
-from src.constants import center_x, center_y, BUTTON_WIDTH, BUTTON_HEIGHT
+from src.constants import center_x, center_y, BUTTON_WIDTH, BUTTON_HEIGHT, WHITE
 # --- CONSTANT ---
 
 KEYBOARD = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$")
@@ -169,7 +169,7 @@ def game_over_popup(window_surface, custom_fonts_tuple):
         mouse_pos = pygame.mouse.get_pos()
 
         # Text
-        draw_text("GAME OVER", 80, RED, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
+        draw_text("GAME OVER", 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
 
         # - Buttons -
 
