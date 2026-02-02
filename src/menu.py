@@ -1,6 +1,7 @@
 from pygame import mouse, event, display, QUIT, MOUSEBUTTONDOWN, SYSTEM_CURSOR_HAND
 from src.button_functions import draw_text, draw_button_pic
-from src.assets_management import blit_rect, blit_display, blit_arrow
+from src.assets_management import blit_rect, blit_display, blit_arrow, play_sound
+from src.data_management import *
 from src.game import game
 from src.options import options_menu
 from src.constants import WHITE, arrow_left_png, arrow_right_png, menu_background, button_background, button_background_hover, score_background
@@ -15,10 +16,14 @@ from src.menu_button import *
 # Menu
 def menu(window_surface,custom_fonts_tuple,clock):
 
+    # Music
+    play_sound("game_music", looping=True)
+
+    
     #----------#
     # Variables
     #----------#
-    difficulty_index = 0
+    difficulty_index = get_json_data(CONFIG_PATH)["difficulty"]
     
     while True:
         blit_display(window_surface, window_surface, menu_background, disp= True)
@@ -58,23 +63,30 @@ def menu(window_surface,custom_fonts_tuple,clock):
                 return None
             if events.type == MOUSEBUTTONDOWN:
 
+                set_json_data(CONFIG_PATH,"difficulty",difficulty_index)
+
                 # Play Button
                 if play_button.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     game(window_surface, custom_fonts_tuple, clock)
                 # Options Button
                 elif options_button.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     options_menu(window_surface, custom_fonts_tuple, clock)
                 elif difficulty_button.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     pass
                     
                 # Left Arrow
                 elif left_arrow_rect.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     difficulty_index -= 1
                     if difficulty_index < 0:
                         difficulty_index = len(difficulties) - 1
 
                 # Right Arrow
                 elif right_arrow_rect.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     difficulty_index += 1
                     if difficulty_index >= len(difficulties):
                         difficulty_index = 0
@@ -82,6 +94,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
 
                 # Exit
                 elif exit_button.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     mouse.set_cursor(SYSTEM_CURSOR_HAND)
                     return None
         clock.tick(60)

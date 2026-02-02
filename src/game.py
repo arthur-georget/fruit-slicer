@@ -1,6 +1,7 @@
 import pygame
 from src.game_function import *
 from src.assets_management import *
+from src.data_management import *
 
 def game(window_surface, custom_fonts_tuple, clock):
 
@@ -15,6 +16,7 @@ def game(window_surface, custom_fonts_tuple, clock):
     combo_timer = 0.0
     game_timer = 0.0
     timmer_running = True
+    difficulty = get_json_data(CONFIG_PATH)["difficulty"]
 
     game_background_image = load_image("game_background")
 
@@ -25,7 +27,8 @@ def game(window_surface, custom_fonts_tuple, clock):
                 "orange": {"normal": load_image("orange"), "iced": load_image("iced_orange"), "sliced": load_image("sliced_orange")},
                 "pineapple": {"normal": load_image("pineapple"), "iced": load_image("iced_pineapple"), "sliced": load_image("sliced_pineapple")},
                 "bomb": {"normal": load_image("bomb"), "iced": load_image("iced_bomb"), "sliced": load_image("sliced_bomb")},
-                "ice_cube": {"normal": load_image("ice_cube"), "iced": load_image("ice_cube"), "sliced": load_image("sliced_ice_cube")}
+                "ice_cube": {"normal": load_image("ice_cube"), "iced": load_image("ice_cube"), "sliced": load_image("sliced_ice_cube")},
+                "combo": {"1": load_image("combo_1"), "2": load_image("combo_2"), "3": load_image("combo_3")}
             }
 
     is_running = True
@@ -39,7 +42,7 @@ def game(window_surface, custom_fonts_tuple, clock):
         # Blit elements in screen
         for element in elements:
             char_to_blit = custom_fonts_tuple[0].render(element["char"], True, (255,255,255))
-            time_left_to_blit = custom_fonts_tuple[0].render(str(int(element["time_left"])), True, (255,255,255))
+            char_shadow_to_blit = custom_fonts_tuple[0].render(element["char"], True, (55,55,55))
             if frozen:
                 element_image = transform.scale(images[element["image_name"]]["iced"], (100, 100))
                 element_rect = element_image.get_rect()
@@ -54,13 +57,21 @@ def game(window_surface, custom_fonts_tuple, clock):
                 element["y_pos"] += element["velocity"].y
 
             window_surface.blit(element_image,element_rect)
-            window_surface.blit(char_to_blit,(element["x_pos"]+40,element["y_pos"]))
-            window_surface.blit(time_left_to_blit,(element["x_pos"]+40,element["y_pos"]+40))
-        
+            window_surface.blit(char_shadow_to_blit,(element["x_pos"]+52,element["y_pos"]+2))
+            window_surface.blit(char_to_blit,(element["x_pos"]+50,element["y_pos"]))
+            
         score_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (255,255,255))
+        score_shadow_to_blit = custom_fonts_tuple[0].render(f"Score: {score}", True, (55,55,55))
         lives_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (255,255,255))
-        window_surface.blit(score_to_blit,(0,100))
-        window_surface.blit(lives_to_blit,(0,200))
+        lives_shadow_to_blit = custom_fonts_tuple[0].render(f"Vies: {lives}", True, (55,55,55))
+        window_surface.blit(score_shadow_to_blit,(1152,202))
+        window_surface.blit(score_to_blit,(1150,200))
+        window_surface.blit(lives_shadow_to_blit,(1152,302))
+        window_surface.blit(lives_to_blit,(1150,300))
+
+        if combo > 0:
+            combo_image = transform.scale(images["combo"][str(combo)], (286, 118))
+            window_surface.blit(combo_image,(1000,50))
 
         ################################## LOGIC ######################################
 
@@ -86,12 +97,12 @@ def game(window_surface, custom_fonts_tuple, clock):
         frozen = freeze_timer > 0
 
         # Spawn Fruits, bombs and icecubes
-        spawn_delay = SPAWN_INIT / SPEED_RATIO
+        spawn_delay =  SPAWN_INIT / (SPEED_RATIO * random.randrange(1,20,1)/20 * (difficulty+1))
         if spawn_timer >= spawn_delay:
             spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
         
         # Lives 
-        life_lost, combo, assigned_chars = update_elements(elements, assigned_chars,delta, combo, frozen)
+        life_lost, combo, assigned_chars = update_elements(elements, assigned_chars, combo)
         lives -= life_lost
 
         # Events
@@ -114,19 +125,31 @@ def game(window_surface, custom_fonts_tuple, clock):
                     key = event.unicode.upper()
                     score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid)
                     score += score_add
+
                     if icecube_hit:
                         freeze_timer = FREEZE_DURATION
-                        print("Glacon touché")
                     elif bomb_hit:
                         lives = life_lost * 3
-                        print("\n BOOOOOOOM !")
                     if score_add > 0:
                         combo_timer = 1.0
 
         # Game Over
         if lives <= 0:
-            print("\n Game Over !")
-            is_running = False
+            play_again = game_over_popup(window_surface, custom_fonts_tuple)
+            if play_again:
+                elements = []
+                assigned_chars = ""
+                spawn_timer = 0.0
+                lives = LIFE_MAX
+                score = 0
+                combo = 0
+                frozen = False
+                freeze_timer = 0.0
+                combo_timer = 0.0
+                game_timer = 0.0
+                timmer_running = True
+            else:
+                is_running = False
 
         pygame.display.update()
 pygame.quit()

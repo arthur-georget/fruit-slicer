@@ -1,5 +1,6 @@
 from os import path,pardir
 from pygame import image,mixer,transform,display,draw,Rect 
+import random
 
 BASE_DIR = path.dirname(path.abspath(__file__))
 FONT_PATH = path.join(BASE_DIR, pardir, "assets", "fonts", "LiberationSans-Regular.ttf")
@@ -126,59 +127,83 @@ images = (
             {
                 "name": "sliced_bomb",
                 "path": path.join(IMAGES_PATH, "sliced_bomb.png")
+            },
+            {
+                "name": "combo_1",
+                "path": path.join(IMAGES_PATH, "combo_1.png")
+            },
+            {
+                "name": "combo_2",
+                "path": path.join(IMAGES_PATH, "combo_2.png")
+            },
+            {
+                "name": "combo_3",
+                "path": path.join(IMAGES_PATH, "combo_3.png")
             }
          )
 
 sounds = (
             {
                 "name": "menu_music",
-                "path": path.join(SOUNDS_PATH, "menu_music.wav")
+                "path": path.join(SOUNDS_PATH, "menu_music.mp3")
             },
             {
                 "name": "game_music",
-                "path": path.join(SOUNDS_PATH, "game_music.wav")
+                "path": path.join(SOUNDS_PATH, "game_music.mp3")
             },
             {
                 "name": "button_clicked",
-                "path": path.join(SOUNDS_PATH, "button_clicked.wav")
+                "path": path.join(SOUNDS_PATH, "button_clicked.mp3")
             },
             {
                 "name": "validation",
-                "path": path.join(SOUNDS_PATH, "validation.wav")
+                "path": path.join(SOUNDS_PATH, "validation.mp3")
             },
             {
                 "name": "cancelation",
-                "path": path.join(SOUNDS_PATH, "cancelation.wav")
+                "path": path.join(SOUNDS_PATH, "cancelation.mp3")
             },
             {
                 "name": "element_throwed",
-                "path": path.join(SOUNDS_PATH, "element_throwed.wav")
+                "path": path.join(SOUNDS_PATH, "element_throwed.mp3")
             },
             {
-                "name": "fruit_sliced",
-                "path": path.join(SOUNDS_PATH, "fruit_sliced.wav")
+                "name": "fruit_sliced_1",
+                "path": path.join(SOUNDS_PATH, "fruit_sliced_1.mp3")
+            },
+            {
+                "name": "fruit_sliced_2",
+                "path": path.join(SOUNDS_PATH, "fruit_sliced_2.mp3")
+            },
+            {
+                "name": "fruit_sliced_3",
+                "path": path.join(SOUNDS_PATH, "fruit_sliced_3.mp3")
             },
             {
                 "name": "ice_sliced",
-                "path": path.join(SOUNDS_PATH, "ice_sliced.wav")
+                "path": path.join(SOUNDS_PATH, "ice_sliced.mp3")
             },
             {
                 "name": "bomb_sliced",
-                "path": path.join(SOUNDS_PATH, "bomb_sliced.wav")
+                "path": path.join(SOUNDS_PATH, "bomb_sliced.mp3")
             },
             {
                 "name": "fruit_missed",
-                "path": path.join(SOUNDS_PATH, "fruit_missed.wav")
+                "path": path.join(SOUNDS_PATH, "fruit_missed.mp3")
             },
             {
                 "name": "game_won",
-                "path": path.join(SOUNDS_PATH, "game_won.wav")
+                "path": path.join(SOUNDS_PATH, "game_won.mp3")
             },
             {
                 "name": "game_over",
-                "path": path.join(SOUNDS_PATH, "game_over.wav")
+                "path": path.join(SOUNDS_PATH, "game_over.mp3")
+            },
+            {
+                "name": "combo_sliced",
+                "path": path.join(SOUNDS_PATH, "combo_sliced.mp3")
             }
-         )
+        )
 
 def load_image(image_name):
 
@@ -202,6 +227,7 @@ def load_image(image_name):
         - pineapple, sliced_orange, iced_orange
         - bomb, iced_bomb
         - ice_cube, sliced_ice_cube
+        - combo_1, combo_2, combo_3
     - states returned:
         0. image loaded successfully
         1. unknown image name
@@ -233,8 +259,7 @@ def load_image(image_name):
 def blit_display(window_screen, surface, image_loaded, x_pos=0, y_pos=0, disp=False):
 
     '''
-    blit image loaded on provided surface, easy fill or center the image with 
-    center_vertically, center_horizontally or fill bool parameters.
+    blit image loaded on provided display.
     - states:
         0. image successfully blitted
         1. error when trying to blit
@@ -256,19 +281,18 @@ def blit_display(window_screen, surface, image_loaded, x_pos=0, y_pos=0, disp=Fa
                 w, h = display.get_window_size()
                 image_loaded = transform.scale(image_loaded,(w,h))
         except:
-            print(f"blit_image(): error when trying to scale display{image_loaded}")
+            print(f"blit_display(): error when trying to scale display{image_loaded}")
             return 2
         window_screen.blit(image_loaded,(0,0))
         return 0
     except:
-        print(f"blit_image(): error when trying to blit display{image_loaded}")
+        print(f"blit_display(): error when trying to blit display{image_loaded}")
         return 1
 
 def blit_rect(window_screen, surface, image_loaded, x_pos=0, y_pos=0,rect = False):
 
     '''
-    blit image loaded on provided surface, easy fill or center the image with 
-    center_vertically, center_horizontally or fill bool parameters.
+    blit image loaded on provided rect.
     - states:
         0. image successfully blitted
         1. error when trying to blit
@@ -283,9 +307,7 @@ def blit_rect(window_screen, surface, image_loaded, x_pos=0, y_pos=0,rect = Fals
     ### RETURN
         state: int
     '''
-        
-    
-        
+
     if rect:
         image_loaded = transform.scale(image_loaded,(surface.width, surface.height))
 
@@ -295,8 +317,7 @@ def blit_rect(window_screen, surface, image_loaded, x_pos=0, y_pos=0,rect = Fals
 def blit_arrow(window_screen, surface, image_loaded, x_pos=0, y_pos=0, arrow= False):
 
     '''
-    blit image loaded on provided surface, easy fill or center the image with 
-    center_vertically, center_horizontally or fill bool parameters.
+    blit arrow image loaded on provided surface
     - states:
         0. image successfully blitted
         1. error when trying to blit
@@ -324,7 +345,6 @@ def blit_arrow(window_screen, surface, image_loaded, x_pos=0, y_pos=0, arrow= Fa
     except:
         print(f"blit_image(): error when trying to blit {image_loaded}")
         return 1
-
 
 def play_sound(sound_name, looping=False):
 
@@ -355,6 +375,9 @@ def play_sound(sound_name, looping=False):
     '''
 
     try:
+        if sound_name == "fruit_sliced":
+            sound_name = f"fruit_sliced_{random.randint(1,3)}"
+
         for sound in sounds:
             if sound["name"] == sound_name:
                 try:
@@ -366,9 +389,7 @@ def play_sound(sound_name, looping=False):
                     sound_loaded.play()
                 else:
                     sound_loaded.play(-1)
-                return 0
-        print("play_sound(): unknown sound name")
-        return 1             
+                return 0         
     except:
         print("play_sound(): unhandled error in play_sound()")
         return 3
