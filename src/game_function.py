@@ -3,6 +3,8 @@ import pygame
 from src.assets_management import *
 from src.button_functions import draw_text
 from src.constants import center_x, center_y, BUTTON_WIDTH, BUTTON_HEIGHT, WHITE
+from src.translation import load_translation
+
 # --- CONSTANT ---
 
 KEYBOARD = ("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",";",":","!","$")
@@ -115,6 +117,8 @@ def combo_add_score(score, combo):
 
 def game_pause(window_surface, custom_fonts_tuple):
     
+    translated_words = load_translation()
+    
     overlay = pygame.Surface(window_surface.get_size(), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 200))
     window_surface.blit(overlay, (0, 0))
@@ -123,7 +127,7 @@ def game_pause(window_surface, custom_fonts_tuple):
         mouse_pos = pygame.mouse.get_pos()
 
         # Text
-        draw_text("PAUSE", 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
+        draw_text(translated_words["pause"], 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
 
         # - Buttons -
 
@@ -131,13 +135,13 @@ def game_pause(window_surface, custom_fonts_tuple):
         resume_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y - 20,    BUTTON_WIDTH, BUTTON_HEIGHT)
         resum_img = (PAUSE_BUTTON_HOVER if resume_button.collidepoint(mouse_pos) else   PAUSE_BUTTON)
         blit_rect(window_surface, resume_button, resum_img, rect=True)
-        draw_text("REPRENDRE", 36, WHITE, resume_button.center, window_surface, custom_fonts_tuple[0])
+        draw_text(translated_words["resume"], 36, WHITE, resume_button.center, window_surface, custom_fonts_tuple[0])
 
         # menu
         menu_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y + 60,  BUTTON_WIDTH, BUTTON_HEIGHT)
         option_img = (PAUSE_BUTTON_HOVER if menu_button.collidepoint(mouse_pos) else    PAUSE_BUTTON)
         blit_rect(window_surface, menu_button, option_img, rect=True)
-        draw_text("MENU", 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
+        draw_text(translated_words["menu"], 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
 
         for event in pygame.event.get():
 
@@ -159,6 +163,8 @@ def game_pause(window_surface, custom_fonts_tuple):
 
 def game_over_popup(window_surface, custom_fonts_tuple):
     
+    translated_words = load_translation()
+
     overlay = pygame.Surface(window_surface.get_size(), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 200))
     window_surface.blit(overlay, (0, 0))
@@ -169,7 +175,7 @@ def game_over_popup(window_surface, custom_fonts_tuple):
         mouse_pos = pygame.mouse.get_pos()
 
         # Text
-        draw_text("GAME OVER", 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
+        draw_text(translated_words["game over"], 80, WHITE, (center_x, center_y - 180), window_surface, custom_fonts_tuple[0])
 
         # - Buttons -
 
@@ -177,13 +183,13 @@ def game_over_popup(window_surface, custom_fonts_tuple):
         play_again_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y - 20,    BUTTON_WIDTH, BUTTON_HEIGHT)
         resum_img = (PAUSE_BUTTON_HOVER if play_again_button.collidepoint(mouse_pos) else   PAUSE_BUTTON)
         blit_rect(window_surface, play_again_button, resum_img, rect=True)
-        draw_text("REJOUER", 36, WHITE, play_again_button.center, window_surface, custom_fonts_tuple[0])
+        draw_text(translated_words["play again"], 36, WHITE, play_again_button.center, window_surface, custom_fonts_tuple[0])
 
         # menu
         menu_button = pygame.Rect(center_x - BUTTON_WIDTH // 2, center_y + 60,  BUTTON_WIDTH, BUTTON_HEIGHT)
         option_img = (PAUSE_BUTTON_HOVER if menu_button.collidepoint(mouse_pos) else    PAUSE_BUTTON)
         blit_rect(window_surface, menu_button, option_img, rect=True)
-        draw_text("MENU", 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
+        draw_text(translated_words["menu"], 36, WHITE, menu_button.center, window_surface, custom_fonts_tuple[0])
 
         for event in pygame.event.get():
 

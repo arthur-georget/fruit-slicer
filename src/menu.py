@@ -6,6 +6,8 @@ from src.game import game
 from src.options import options_menu
 from src.constants import WHITE, arrow_left_png, arrow_right_png, menu_background, button_background, button_background_hover, score_background
 from src.menu_button import *
+from src.translation import load_translation
+
 #-------#
 # MUSIC
 #-------#
@@ -18,7 +20,14 @@ def menu(window_surface,custom_fonts_tuple,clock):
 
     # Music
     play_sound("game_music", looping=True)
+    translated_words = load_translation()
 
+    difficulties = [
+                    translated_words["easy"],
+                    translated_words["medium"],
+                    translated_words["hard"],
+                    translated_words["godlike"]
+                   ]
     
     #----------#
     # Variables
@@ -26,26 +35,27 @@ def menu(window_surface,custom_fonts_tuple,clock):
     difficulty_index = get_json_data(SETTINGS_PATH)["difficulty"]
     
     while True:
+        
         blit_display(window_surface, window_surface, menu_background, disp= True)
         mouse_pos = mouse.get_pos()
         ##Score
         # Button Play
         play_image = (button_background_hover if play_button.collidepoint(mouse_pos)else button_background)
         blit_rect(window_surface, play_button,play_image, rect= True)
-        draw_text("PLAY", 36, WHITE, play_button.center, window_surface,custom_fonts_tuple[0]) 
+        draw_text(translated_words["play"], 36, WHITE, play_button.center, window_surface,custom_fonts_tuple[0]) 
 
         # Button Options
         options_image = (button_background_hover if options_button.collidepoint(mouse_pos)else button_background)
         blit_rect(window_surface,options_button,options_image, rect= True)
-        draw_text("OPTIONS", 36, WHITE, options_button.center, window_surface,custom_fonts_tuple[0])
+        draw_text(translated_words["options"], 36, WHITE, options_button.center, window_surface,custom_fonts_tuple[0])
 
         # Button Exit
         exit_img =  (button_background_hover if exit_button.collidepoint(mouse_pos)else button_background)
         blit_rect(window_surface,exit_button,exit_img, rect= True)
-        draw_text("EXIT", 36, WHITE, exit_button.center, window_surface,custom_fonts_tuple[0])
+        draw_text(translated_words["exit"], 36, WHITE, exit_button.center, window_surface,custom_fonts_tuple[0])
 
         # Difficulty button and swap
-        blit_rect(window_surface, difficulty_button, button_background_hover, rect= True)
+        blit_rect(window_surface, difficulty_button, button_background, rect= True)
         draw_text(difficulties[difficulty_index],36, difficulty_color[difficulty_index], difficulty_button.center, window_surface,custom_fonts_tuple[0])
         
         # Arrow blit
@@ -54,7 +64,7 @@ def menu(window_surface,custom_fonts_tuple,clock):
         
         # Score
         draw_button_pic(10, 10, 341, 512, score_background, window_surface)
-        draw_text("Votre score : 1250", 36, (255, 255, 255), your_score_center, window_surface, custom_fonts_tuple[0])
+        draw_text(f"{translated_words["your score"]} : 1250", 36, (255, 255, 255), your_score_center, window_surface, custom_fonts_tuple[0])
         for score_text, center in zip(top_scores, top_scores_centers):
             draw_text(score_text, 32, (255, 255, 255), center, window_surface, custom_fonts_tuple[0])
 
@@ -73,6 +83,13 @@ def menu(window_surface,custom_fonts_tuple,clock):
                 elif options_button.collidepoint(events.pos):
                     play_sound("button_clicked")
                     options_menu(window_surface, custom_fonts_tuple, clock)
+                    translated_words = load_translation()
+                    difficulties = [
+                            translated_words["easy"],
+                            translated_words["medium"],
+                            translated_words["hard"],
+                            translated_words["godlike"]
+                                    ]
                 elif difficulty_button.collidepoint(events.pos):
                     play_sound("button_clicked")
                     pass

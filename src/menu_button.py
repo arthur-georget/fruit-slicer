@@ -6,7 +6,7 @@ play_button = Rect((center_x - (BUTTON_WIDTH/2), center_y + 110),(BUTTON_WIDTH,B
 # Options button
 options_button = Rect((center_x - (BUTTON_WIDTH/2), center_y + 280),(BUTTON_WIDTH,BUTTON_HEIGHT)) 
 # Exit button
-exit_button = Rect((center_x - (BUTTON_WIDTH/2)+ BUTTON_WIDTH + 390, center_y + 280),(BUTTON_WIDTH / 3,BUTTON_HEIGHT))
+exit_button = Rect((center_x - (BUTTON_WIDTH/2)+ BUTTON_WIDTH + 340, center_y + 280),(BUTTON_WIDTH / 2,BUTTON_HEIGHT))
 # Difficulty rect
 difficulty_button = Rect((center_x - (BUTTON_WIDTH/2), center_y + 200),(BUTTON_WIDTH,BUTTON_HEIGHT))
 
@@ -23,12 +23,6 @@ left_arrow_rect = arrow_left_png.get_rect()
 right_arrow_rect = arrow_right_png.get_rect()
 left_arrow_rect.topleft = (center_x - ((BUTTON_WIDTH/2)+ 50), center_y + 208)
 right_arrow_rect.topright = (center_x + ((BUTTON_WIDTH/2)+ 58), center_y + 208)
-
-difficulties = [
-    "EASY",
-    "MEDIUM",
-    "HARD",
-    "G0D LIK3"]
 
 difficulty_color = [
     GREEN,     # easy
