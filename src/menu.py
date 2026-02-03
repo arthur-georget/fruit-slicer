@@ -18,8 +18,14 @@ from src.translation import load_translation
 # Menu
 def menu(window_surface,custom_fonts_tuple,clock):
 
+    settings = load_settings()
     # Music
-    play_sound("game_music", looping=True)
+    game_music = play_sound("game_music", looping=True)
+    if not settings["music_enabled"]:
+        game_music.stop()
+    else:
+        game_music.play()
+
     translated_words = load_translation()
 
     difficulties = [
@@ -77,12 +83,14 @@ def menu(window_surface,custom_fonts_tuple,clock):
 
                 # Play Button
                 if play_button.collidepoint(events.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     game(window_surface, custom_fonts_tuple, clock)
                 # Options Button
                 elif options_button.collidepoint(events.pos):
-                    play_sound("button_clicked")
-                    options_menu(window_surface, custom_fonts_tuple, clock)
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
+                    options_menu(window_surface, custom_fonts_tuple, clock, game_music)
                     translated_words = load_translation()
                     difficulties = [
                             translated_words["easy"],
@@ -91,19 +99,22 @@ def menu(window_surface,custom_fonts_tuple,clock):
                             translated_words["godlike"]
                                     ]
                 elif difficulty_button.collidepoint(events.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     pass
                     
                 # Left Arrow
                 elif left_arrow_rect.collidepoint(events.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     difficulty_index -= 1
                     if difficulty_index < 0:
                         difficulty_index = len(difficulties) - 1
 
                 # Right Arrow
                 elif right_arrow_rect.collidepoint(events.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     difficulty_index += 1
                     if difficulty_index >= len(difficulties):
                         difficulty_index = 0
@@ -111,7 +122,8 @@ def menu(window_surface,custom_fonts_tuple,clock):
 
                 # Exit
                 elif exit_button.collidepoint(events.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     mouse.set_cursor(SYSTEM_CURSOR_HAND)
                     return None
         clock.tick(60)

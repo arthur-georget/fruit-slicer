@@ -5,6 +5,7 @@ from src.data_management import *
 
 def game(window_surface, custom_fonts_tuple, clock):
 
+    settings = load_settings()
     elements = []
     assigned_chars = ""
     spawn_timer = 0.0
@@ -99,7 +100,7 @@ def game(window_surface, custom_fonts_tuple, clock):
         # Spawn Fruits, bombs and icecubes
         spawn_delay =  SPAWN_INIT / (SPEED_RATIO * random.randrange(1,20,1)/20 * (difficulty+1))
         if spawn_timer >= spawn_delay:
-            spawn_timer, assigned_chars = spawn_element(elements,assigned_chars)
+            spawn_timer, assigned_chars = spawn_element(elements,assigned_chars, settings)
         
         # Lives 
         life_lost, combo, assigned_chars = update_elements(elements, assigned_chars, combo)
@@ -113,7 +114,7 @@ def game(window_surface, custom_fonts_tuple, clock):
             # Pause
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    result = game_pause(window_surface, custom_fonts_tuple)
+                    result = game_pause(window_surface, custom_fonts_tuple, settings)
                     
                     if result == 0:
                         pass
@@ -123,7 +124,7 @@ def game(window_surface, custom_fonts_tuple, clock):
                 # Game
                 else:
                     key = event.unicode.upper()
-                    score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid)
+                    score_add, combo, icecube_hit, bomb_hit, assigned_chars = slice_element(elements, assigned_chars, key, combo, combo_valid, settings)
                     score += score_add
 
                     if icecube_hit:
@@ -135,7 +136,7 @@ def game(window_surface, custom_fonts_tuple, clock):
 
         # Game Over
         if lives <= 0:
-            play_again = game_over_popup(window_surface, custom_fonts_tuple)
+            play_again = game_over_popup(window_surface, custom_fonts_tuple, settings)
             if play_again:
                 elements = []
                 assigned_chars = ""

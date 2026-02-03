@@ -1,6 +1,7 @@
 import random
 import pygame
 from src.assets_management import *
+from src.data_management import *
 from src.button_functions import draw_text
 from src.constants import center_x, center_y, BUTTON_WIDTH, BUTTON_HEIGHT, WHITE
 from src.translation import load_translation
@@ -47,19 +48,23 @@ def create_element(element_type,x_pos,y_pos,image_name,assigned_chars):
     "sliced": False,
     "image_name": image_name}, assigned_chars
 
-def spawn_element(elements, assigned_chars):
+def spawn_element(elements, assigned_chars, settings):
+
     if random.random() > 0.9 :
         new_element, assigned_chars = create_element("ICECUBE",random.randrange(200,1100,10),-100,"ice_cube", assigned_chars)
         elements.append(new_element)
-        play_sound("element_throwed")
+        if settings["sfx_enabled"]:
+            play_sound("element_throwed")
     elif random.random() > 0.8 :
         new_element, assigned_chars = create_element("BOMB",random.randrange(200,1200,10),-100,"bomb", assigned_chars)
         elements.append(new_element)
-        play_sound("element_throwed")
+        if settings["sfx_enabled"]:
+            play_sound("element_throwed")
     else:
         new_element, assigned_chars = create_element("FRUIT",random.randrange(200,1200,10),-100,random.choice(FRUITS), assigned_chars)
         elements.append(new_element)
-        play_sound("element_throwed")
+        if settings["sfx_enabled"]:
+            play_sound("element_throwed")
     return 0.0, assigned_chars
 
 def update_elements(elements, assigned_chars, combo):
@@ -78,7 +83,8 @@ def update_elements(elements, assigned_chars, combo):
         combo = 0
     return life_lost, combo, assigned_chars
 
-def slice_element(elements, assigned_chars, key, combo, combo_valid):
+def slice_element(elements, assigned_chars, key, combo, combo_valid, settings):
+
     icecube_hit = False
     bomb_hit = False
     score = 0
@@ -89,10 +95,12 @@ def slice_element(elements, assigned_chars, key, combo, combo_valid):
             if not element["type"] == "FRUIT":
                 if element["type"] == "BOMB":
                     bomb_hit = True
-                    play_sound("bomb_sliced")
+                    if settings["sfx_enabled"]:
+                        play_sound("bomb_sliced")
                 elif element["type"] == "ICECUBE":
                     icecube_hit = True
-                    play_sound("ice_sliced")
+                    if settings["sfx_enabled"]:
+                        play_sound("ice_sliced")
                 assigned_chars = assigned_chars.replace(element["char"], '')
                 elements.remove(element)
                 break
@@ -100,14 +108,17 @@ def slice_element(elements, assigned_chars, key, combo, combo_valid):
             elements.remove(element)
 
             if combo_valid:
-                play_sound("combo_sliced")
+                if settings["sfx_enabled"]:
+                    play_sound("combo_sliced")
                 combo = min(combo + 1, MAX_COMBO)
             else :
                 combo = 0
-            play_sound("fruit_sliced")
+            if settings["sfx_enabled"]:
+                play_sound("fruit_sliced")
             score = 1 + combo
     if not hit:
-        play_sound("fruit_missed")
+        if settings["sfx_enabled"]:
+            play_sound("fruit_missed")
         
         
     return score, combo, icecube_hit, bomb_hit, assigned_chars
@@ -115,7 +126,7 @@ def slice_element(elements, assigned_chars, key, combo, combo_valid):
 def combo_add_score(score, combo):
     return score * (1 + combo)
 
-def game_pause(window_surface, custom_fonts_tuple):
+def game_pause(window_surface, custom_fonts_tuple, settings):
     
     translated_words = load_translation()
     
@@ -151,25 +162,28 @@ def game_pause(window_surface, custom_fonts_tuple):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if resume_button.collidepoint(event.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     return 0
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if menu_button.collidepoint(event.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     return 1
 
         pygame.display.update()
 
-def game_over_popup(window_surface, custom_fonts_tuple):
-    
+def game_over_popup(window_surface, custom_fonts_tuple, settings):
+
     translated_words = load_translation()
 
     overlay = pygame.Surface(window_surface.get_size(), pygame.SRCALPHA)
     overlay.fill((0, 0, 0, 200))
     window_surface.blit(overlay, (0, 0))
-
-    play_sound("game_over")
+    
+    if settings["sfx_enabled"]:
+        play_sound("game_over")
 
     while True:
         mouse_pos = pygame.mouse.get_pos()
@@ -199,12 +213,14 @@ def game_over_popup(window_surface, custom_fonts_tuple):
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_again_button.collidepoint(event.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     return True
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if menu_button.collidepoint(event.pos):
-                    play_sound("button_clicked")
+                    if settings["sfx_enabled"]:
+                        play_sound("button_clicked")
                     return False
 
         pygame.display.update()
