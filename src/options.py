@@ -1,7 +1,7 @@
 from pygame import mouse, display, MOUSEBUTTONDOWN, QUIT, event
 from src.button_functions import *
 from src.constants import WHITE, options_background, button_background, button_background_hover, arrow_left_png, arrow_right_png, BLACK
-from src.assets_management import blit_rect, blit_display, draw_fruity_slider
+from src.assets_management import blit_rect, blit_display, draw_fruity_slider, play_sound
 from src.data_management import save_settings, load_settings
 from src.translation import load_translation
 from src.options_button import *
@@ -67,12 +67,14 @@ def options_menu(window_surface, custom_fonts_tuple, clock):
 
                 # Back
                 if back_button.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     save_settings(settings)
                     return
 
                 # Change language
                 # Left Arrow
                 elif left_arrow_lang.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     language_index -= 1
                     if language_index < 0:
                         language_index = len(languages) - 1
@@ -81,9 +83,9 @@ def options_menu(window_surface, custom_fonts_tuple, clock):
                     save_settings(settings)
                     T = load_translation()
 
-
                 # Right Arrow
                 elif right_arrow_lang.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     language_index += 1
                     if language_index >= len(languages):
                         language_index = 0
@@ -91,27 +93,29 @@ def options_menu(window_surface, custom_fonts_tuple, clock):
                     settings["language"] = languages[language_index]
                     save_settings(settings)
                     T = load_translation()
-
                 
-
                 # Toggle music
                 if music_toggle_button.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     settings["music_enabled"] = not settings["music_enabled"]
                     save_settings(settings)
 
                 # Toggle SFX
                 if sfx_toggle_button.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     settings["sfx_enabled"] = not settings["sfx_enabled"]
                     save_settings(settings)
 
                 # Music slider
                 if music_slider.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     rel_x = events.pos[0] - music_slider.x
                     settings["music_volume"] = max(0, min(1, rel_x / music_slider.width))
                     save_settings(settings)
 
                 # SFX slider
                 if sfx_slider.collidepoint(events.pos):
+                    play_sound("button_clicked")
                     rel_x = events.pos[0] - sfx_slider.x
                     settings["sfx_volume"] = max(0, min(1, rel_x / sfx_slider.width))
                     save_settings(settings)
